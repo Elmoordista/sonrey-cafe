@@ -31364,7 +31364,7 @@ var render = function () {
                                   _c(
                                     "v-card-title",
                                     { attrs: { "primary-title": "" } },
-                                    [_c("h4", [_vm._v("Login")])]
+                                    [_c("h4", [_vm._v("Administrator")])]
                                   ),
                                   _vm._v(" "),
                                   _c(

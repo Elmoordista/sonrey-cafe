@@ -12,7 +12,7 @@
                 <v-container class="cont _cont">
                   <v-card flat>
                     <v-card-title primary-title>
-                      <h4>Login</h4>
+                      <h4>Administrator</h4>
                     </v-card-title>
                     <v-form id="v_form">
                       <v-text-field
@@ -121,7 +121,6 @@ export default {
   box-shadow: 0 3px 5px -1px rgba(100, 100, 0, 0.2),
     0 5px 8px 0 rgba(100, 100, 0, 0.14), 0 1px 14px 0 rgba(100, 100, 0, 0.12) !important;
 }
-
 #login_form {
   width: 100%;
   height: 100%;
