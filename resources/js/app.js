@@ -9,10 +9,16 @@ require('./bootstrap');
 import vuetify from './src/plugin/vuetify'
 import router from './router'
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 import App from './layout';
+
+import "../css/app.css"
 
 window.Vue = require('vue').default;
 
+Vue.use(VueAxios, axios)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

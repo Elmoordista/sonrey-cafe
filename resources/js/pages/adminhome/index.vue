@@ -37,17 +37,21 @@
     data: () => ({
       links: [
         {
+        text: "Category  &  Roles",
+          route: "settings",
+        },
+        {
         text: "Edit / Add items",
-        route: "items",
-      },
-      {
-        text: "Purchase History",
-        route: "purchase",
-      },
-      {
-        text: "Account Management",
-        route: "accounts",
-      },
+          route: "items",
+        },
+        {
+          text: "Purchase History",
+          route: "purchase",
+        },
+        {
+          text: "Account Management",
+          route: "accounts",
+        },
       ],
     }),
 

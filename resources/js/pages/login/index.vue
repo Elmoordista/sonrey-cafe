@@ -88,7 +88,7 @@ export default {
     _submit() {
       const thiss = this;
       axios
-        .post("/api/checklogin", {
+        .post("/admin/admin/login", {
           email: this.data.email,
           password: this.data.password,
         })
@@ -104,8 +104,6 @@ export default {
             thiss.snackbar = true;
             thiss.text = "Invalid Email/Password";
           }
-          // localStorage.setItem("token", response.data.token);
-          // thiss.$router.push({ name: "dashboard" });
         })
         .catch(function (error) {
           console.log(error);

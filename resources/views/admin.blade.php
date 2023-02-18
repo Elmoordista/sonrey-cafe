@@ -8,6 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Fonts -->
+    <link rel="icon" href="{{ url('adminlogo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ mix('css/app.css', config('app.manifest_path')) }}" rel="stylesheet">

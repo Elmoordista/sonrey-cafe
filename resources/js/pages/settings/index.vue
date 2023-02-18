@@ -46,12 +46,12 @@ export default {
       //   route: "new_account",
       // },
       {
-        text: "Employees Accounts",
-        route: "employee_account",
+        text: "Category",
+        route: "category",
       },
       {
-        text: "Users Account",
-        route: "user_account",
+        text: "Roles",
+        route: "roles",
       },
     ],
   }),

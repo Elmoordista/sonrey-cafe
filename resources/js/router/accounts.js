@@ -2,6 +2,7 @@ import index from '../pages/accounts/index'
 import new_account from '../pages/accounts/new_account'
 import employee_account from '../pages/accounts/employee_accounts'
 import user_account from '../pages/accounts/user_accounts'
+import edit_account from '../pages/accounts/edit_account'
 // import add from '@/pages/Accounts/Add'
 // import edit from '@/pages/Accounts/Edit'
 // import show from '@/pages/Accounts/Show'
@@ -23,6 +24,11 @@ export default [
         path: `/accounts/employee_account`,
         name: `employee_account`,
         component: employee_account
+      },
+      {
+        path: `/accounts/:id/edit-account`,
+        name: `edit_account`,
+        component: edit_account
       },
       {
         path: `/accounts/user_account`,

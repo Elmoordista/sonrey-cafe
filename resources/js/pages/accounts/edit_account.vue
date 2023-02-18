@@ -173,12 +173,18 @@
         },
       }
     },
+    mounted(){
+      this.getUser();
+    },
     methods:{
       gotO(link){
         this.$router.push({ name: link})
       },
-      saveuser(link){
-       console.log(this.payload)
+      getUser(){
+          this.axios.get('/admin/client/'+`${this.$route.params.id}`).then((response) => {
+            this.payload = response.data;
+            this.payload.confirmpassword = response.data.password;
+          })
       },
       getImage(){
         this.$refs.file_input.click()
@@ -206,8 +212,9 @@
         }
       },
       saveuser(){
+        delete this.payload.confirmpassword
         this.axios.post('/admin/client',this.payload).then((response) => {
-          console.log(response)
+           this.$router.push({ name: 'user_account'})
         })
       }
       
