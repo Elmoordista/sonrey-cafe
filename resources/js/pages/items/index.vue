@@ -2,12 +2,13 @@
     <div id="left-side-bar" color="#FFCC6C">
         <v-row>
           <v-col cols="12 pa-10 d-flex " id="left-list-wrapper">
-              <div class="item-wrapper d-flex flex-column"  v-for="data in items" :key="data.id">
+             <div class="item-wrapper d-flex flex-column"  v-for="data in items" :key="data.id">
                 <div class="border border-dark" id="list-item" >
                   <v-img v-if="data.image"
                     max-height="160"
-                    max-width="160"
+                    max-width="140"
                     :src="data.image"
+                    id="v-image"
                   >
                   </v-img>
                   <v-img v-else
@@ -16,15 +17,18 @@
                     :src="noimage"
                   >
                   </v-img>
-                  <h4>{{data.product_name}}</h4>
-                  <h4>₱ {{data.price}}</h4>
+                  <div class="d-flex product-info mt-3">
+                    <h5>{{data.product_name}}</h5>
+                    <h5>₱ {{data.price}}</h5>
+                  </div>
                 </div>
-                 <v-btn dark @click="editItem(data)">
+                  <v-btn dark @click="editItem(data)">
                     Edit
                   </v-btn>
-                 <v-btn wh @click="deleteItem(data)">
+                  <v-btn wh @click="deleteItem(data)">
                     Delete
                   </v-btn>
+                
               </div>
                <v-btn
                 class="mx-2" id="btn-add"
@@ -206,76 +210,6 @@ export default {
 </script>
 
 <style scoped>
-#left-side-bar{
-    height: 100%;
-    background-color: #FFF5BF;
-}
-#left-side-bar .row{
-    height: 100%;
-    margin: 0;
-}
-#left-list-wrapper{
-    padding: 0;
-    gap: 10px;
-    max-width: 40%;
-    max-height: 440px;
-}
-#left-list .v-sheet {
-    height: 100%;
-}
-#list-item h4{
-  margin-top: 10px;
-  margin-bottom: 0;
-}
-#list-item{
-    border-radius: 25px;
-    height: 270px;
-    display: flex;
-    width: -moz-fit-content;
-    width: fit-content;
-    padding: 25px;
-    background-color: #fff;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-.item-wrapper{
-  gap: 10px;
-}
-.item-wrapper button{
-  border-radius: 15px;
-}
-#btn-add{
-  height: 100%;
-  width: 210px;
-  border-radius: 41px;
-}
-.add-image-wrapper{
-    border: solid 2px;
-    border-radius: 10px;
-    height: 250px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #676767;
-}
-.add-image-wrapper h4{
-    color: #fff;
-}
-#modal-wrapper{
-  padding: 40px;
-   background-color: #FFF5BF;
-}
-#closemodal{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-#selected-image{
-    border-radius: 10px;
-    width: 100%;
-    height: 100%;
-}
+
 </style>
 

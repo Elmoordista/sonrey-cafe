@@ -20,8 +20,6 @@ class AdminController extends Controller
             $user = Auth::guard('admin')->user();
             $user['token'] =  $user->createToken('MyApp',['admin'])->accessToken->token;
             return  ['message' => 'success',  $user];
-
-        
         } else {
             return ['message' => 'no account'];
         }
@@ -29,7 +27,11 @@ class AdminController extends Controller
 
     public function index()
     {
-        //
+        return Auth::user();
+    }
+    public function checkuser()
+    {
+        return Auth::guard('admin')->user();
     }
 
     /**

@@ -19,6 +19,7 @@ class CreateClientsTable extends Migration
             $table->date('birth_date');
             $table->text('number');
             $table->text('name');
+            $table->text('image');
             $table->integer('role');
             $table->text('username');
             $table->text('password');

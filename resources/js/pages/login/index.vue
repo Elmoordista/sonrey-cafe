@@ -100,6 +100,7 @@ export default {
         .then(function (response) {
           if (response.data.message == "success") {
             localStorage.setItem("token", response.data[0].token);
+            localStorage.setItem("role", response.data[0].role);
             thiss.$router.go({ name: "dashboard" });
             thiss.text = "Successfully login";
           } else if (response.data.message == "Unauthorised") {

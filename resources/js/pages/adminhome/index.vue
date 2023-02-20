@@ -7,12 +7,13 @@
     >
       <v-container class="py-0 fill-height ma-0">
         <v-img
-            max-height="130"
-            max-width="130"
+            max-height="110"
+            max-width="110"
             src="/adminlogo.png"
           ></v-img>
         <v-spacer></v-spacer>
-        <div>
+        <!-- <div> -->
+        <div v-if="role == 1">
           <v-btn
             v-for="link in links"
             :key="link.id"
@@ -21,8 +22,11 @@
           >
             {{ link.text }}
           </v-btn>
+         
         </div>
-
+        <v-btn text @click="logout">
+            log-out
+          </v-btn>
       </v-container>
     </v-app-bar>
 
@@ -35,6 +39,7 @@
 <script>
   export default {
     data: () => ({
+      role:'',
       links: [
         {
         text: "Category  &  Roles",
@@ -54,11 +59,33 @@
         },
       ],
     }),
+    mounted(){
+      this.role = localStorage.getItem('role');
+      if(this.role == 2){
+         this.$router.push({ name: 'add_order'})
+      }
+      else if(this.role == 3){
 
+      }
+      else{
+        this.$router.push({ name: 'total_sales'})
+      }
+      // this.checkuser();
+    },
     methods:{
       goTO(link){
-      this.$router.push({ name: link})
-      }
+        this.$router.push({ name: link})
+      },
+      logout(){
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');
+        this.$router.push({ name: 'login'})
+      },
+      // checkuser(){
+      //   this.axios.get('/admin/admin').then((response) => {
+      //     console.log(response,'admin');
+      //   })
+      // }
     }
   }
 </script>

@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Cart_detail extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'product_id',
+        'quantity',
+        'total',
+        'cart_id'
+    ];
+
+    protected $with = ['product'];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

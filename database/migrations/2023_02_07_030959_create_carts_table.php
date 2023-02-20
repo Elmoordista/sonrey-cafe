@@ -17,6 +17,7 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->integer('cart_total');
+            $table->boolean('status')->default(0);
             $table->foreign('client_id')
             ->references('id')
             ->on('clients')

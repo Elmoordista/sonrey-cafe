@@ -1,17 +1,22 @@
 <template>
     <div id="left-side-bar">
         <v-row>
-          <v-col cols="2" id="left-list">
+          <v-col id="left-list">
               <v-list color="#FFCC6C">
                 <v-list-item
                    v-for="link in items"
                   :key="link.id"
                   @click="gotO(link.route)"
-                  link
+                  active-color="primary"
+                  :value="link.route"
+                  :class="link.route == routes ? 'active-btn':''"
                 >
                   <v-list-item-content>
-                    <v-list-item-title>
-                     {{ link.text }}
+                    <v-list-item-title class="d-flex">
+                      <v-icon size="20">{{ link.icon }}</v-icon>
+                      <p class="mb-0 ml-5">
+                        {{ link.text }}
+                      </p>
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -40,6 +45,7 @@ export default {
   data: () => ({
     drawer: null,
     payload: null,
+    routes: '',
     items: [
       // {
       //   text: "Add Employees Account",
@@ -48,10 +54,13 @@ export default {
       {
         text: "Add order",
         route: "add_order",
+        icon: "mdi-cart",
       },
       {
         text: "Order list",
         route: "order_list",
+        icon: "mdi-format-list-bulleted",
+
       },
     ],
   }),
@@ -75,6 +84,7 @@ export default {
 
   methods: {
     gotO(link){
+      this.routes = link;
       this.$router.push({ name: link})
     }
   },
@@ -84,7 +94,7 @@ export default {
     },
   },
   mounted(){
-
+    this.routes = this.$route.name;
   }
 };
 </script>
@@ -98,8 +108,8 @@ export default {
     margin: 0;
 }
 #left-list{
-    padding: 0;
-    max-width: 20%;
+  padding: 0;
+  max-width: 10%;
 }
 #left-list .v-sheet {
     height: 100%;

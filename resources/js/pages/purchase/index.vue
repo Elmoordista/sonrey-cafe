@@ -8,16 +8,19 @@
                   :key="link.id"
                   @click="gotO(link.route)"
                   link
+                  :class="link.route == routes ? 'active-btn':''"
                 >
                   <v-list-item-content>
-                    <v-list-item-title>
-                     {{ link.text }}
+                    <v-list-item-title class="d-flex">
+                    <v-icon size="20">{{ link.icon }}</v-icon>
+                      <p class="mb-0 ml-5">
+                        {{ link.text }}
+                      </p>
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
           </v-col>
-
           <v-col class="pa-10" id="router-view">
             <router-view></router-view>
           </v-col>
@@ -37,20 +40,24 @@ export default {
   data: () => ({
     drawer: null,
     payload: null,
+    routes: '',
     items: [
       {
         text: "Purchase history",
         route: "history",
+        icon: "mdi-cart-plus",
       },
       {
         text: "Total Sales",
         route: "total_sales",
+        icon: "mdi-sale",
       },
     ],
   }),
 
   methods: {
     gotO(link){
+      this.routes = link;
       this.$router.push({ name: link})
     }
   },
@@ -60,7 +67,7 @@ export default {
     },
   },
   mounted(){
-
+   this.routes = this.$route.name;
   }
 };
 </script>

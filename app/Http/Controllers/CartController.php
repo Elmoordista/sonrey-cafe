@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Cart_detail;
+use Exception;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -14,7 +16,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        return Cart::where('status', 1)->where('client_id', 1)->with('cart_detail')->first();
     }
 
     /**
@@ -35,7 +37,51 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $cart = [];
+            $cart_status = Cart::where('status', 1)->where('client_id', 1)->first();
+            if(empty($cart_status)){
+                $data = array(
+                    'client_id' => 1,   
+                    'cart_total' => $request->total,    
+                    'status' => 1, 
+                );
+                $cart = Cart::create($data);
+            }
+            else{
+                $data = array(
+                    'cart_total' => $request->total + $cart_status->cart_total,    
+                );
+                $cart = Cart::where('id',$cart_status->id)->update($data);
+            }
+           
+            if($cart){
+                $cart_id = isset($cart->id) ? $cart->id : $cart_status->id;
+                $cart_product = Cart_detail::where('cart_id', $cart_id)->where('product_id',$request->id)->first();
+
+                if(empty($cart_product)){
+                    $cart_detail = array(
+                        'cart_id' =>   $cart_id,    
+                        'product_id' => $request->id,   
+                        'quantity' => $request->quantity,    
+                        'total' => $request->total,    
+                    );
+                    return Cart_detail::create($cart_detail);
+                }
+                else{
+                    $cart_detail = array(   
+                        'quantity' => $request->quantity + $cart_product->quantity,    
+                        'total' => $request->total + $cart_product->total,    
+                    );
+                    return Cart_detail::where('cart_id', $cart_id)->where('product_id',$request->id)->update($cart_detail);
+                }
+
+            }
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+      
     }
 
     /**

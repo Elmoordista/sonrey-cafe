@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartDetailController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClientController;
@@ -31,6 +33,15 @@ Route::controller(CategoryController::class)->group(function () {
 });
 Route::controller(AdminController::class)->group(function () {
     Route::post('admin/login', 'login');
+    Route::get('admin/checkuser', 'checkuser');
+});
+Route::controller(CartDetailController::class)->group(function () {
+    Route::post('cart_detail/deleteproduct', 'deleteProduct');
+    Route::post('cart_detail/updatecart', 'updateCart');
+});
+
+Route::controller(OrderController::class)->group(function () {
+    Route::post('order/update_status', 'update_status');
 });
 
 
@@ -40,4 +51,6 @@ Route::resources([
     'category' => CategoryController::class,
     'admin' => AdminController::class,
     'order' => OrderController::class,
+    'cart' => CartController::class,
+    'cart_detail' => CartDetailController::class,
 ]);

@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration
             $table->text('order_ref');
             $table->integer('total');
             $table->unsignedBigInteger('client_id');
+            $table->integer('status')->default(0);
             $table->foreign('client_id')
             ->references('id')
             ->on('clients')

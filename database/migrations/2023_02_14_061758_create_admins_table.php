@@ -30,6 +30,20 @@ class CreateAdminsTable extends Migration
                 "role" => "1",
             ]
         );
+        Admin::create(
+            [
+                "email" => "cashieraccount@gmail.com",
+                "password" => bcrypt('123123123'),
+                "role" => "2",
+            ]
+        );
+        Admin::create(
+            [
+                "email" => "kitchenaccount@gmail.com",
+                "password" => bcrypt('123123123'),
+                "role" => "3",
+            ]
+        );
     }
 
     /**
