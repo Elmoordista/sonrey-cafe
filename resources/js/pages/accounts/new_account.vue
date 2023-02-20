@@ -177,9 +177,6 @@
       gotO(link){
         this.$router.push({ name: link})
       },
-      saveuser(link){
-       console.log(this.payload)
-      },
       getImage(){
         this.$refs.file_input.click()
       },
@@ -207,7 +204,7 @@
       },
       saveuser(){
         this.axios.post('/admin/client',this.payload).then((response) => {
-          console.log(response)
+           this.gotO('user_account')
         })
       }
       

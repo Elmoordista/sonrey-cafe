@@ -18,5 +18,6 @@ class Client extends Model
         'name',
         'username',
         'password',
+        'role',
     ];
 }

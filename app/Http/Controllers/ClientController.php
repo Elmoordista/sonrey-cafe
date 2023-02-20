@@ -16,7 +16,7 @@ class ClientController extends Controller
     public function index()
     {
         try {
-                return Client::all();
+            return Client::where('role',null)->get();
             } catch (Exception $e) {
                 return response()->json(['message' => $e->getMessage()], 500);
             }
