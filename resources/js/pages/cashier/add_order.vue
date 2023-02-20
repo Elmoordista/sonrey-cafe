@@ -40,7 +40,6 @@
                     order
                   </v-btn>
                 </div>
-                
               </div>
           </v-col>
         </div>
