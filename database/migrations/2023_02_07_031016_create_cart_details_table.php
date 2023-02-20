@@ -17,6 +17,7 @@ class CreateCartDetailsTable extends Migration
             $table->id();
             $table->integer('product_id');
             $table->integer('quantity');
+            $table->integer('total');
             $table->unsignedBigInteger('cart_id');
             $table->foreign('cart_id')
             ->references('id')
