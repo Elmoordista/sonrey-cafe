@@ -6297,6 +6297,8 @@ __webpack_require__.r(__webpack_exports__);
       dialog: false,
       drawer: null,
       loading: false,
+      category_search: '',
+      name_search: '',
       laoderorder: false,
       isEdit: false,
       save_Order: true,
@@ -6342,27 +6344,37 @@ __webpack_require__.r(__webpack_exports__);
         _this2.getCart();
       });
     },
+    searchProduct: function searchProduct() {
+      var _this3 = this;
+      var payload = {
+        name: this.name_search,
+        cat_id: this.category_search
+      };
+      this.axios.post('/admin/product/searchproduct', payload).then(function (response) {
+        _this3.items = response.data;
+      });
+    },
     cancelOrder: function cancelOrder() {
       this.payload = [];
       this.dialog = false;
     },
     placeOrder: function placeOrder() {
-      var _this3 = this;
+      var _this4 = this;
       this.laoderorder = true;
       this.payload.total = parseInt(this.payload.price) * this.payload.quantity;
       this.axios.post('/admin/cart', this.payload).then(function (response) {
-        _this3.dialog = false;
-        _this3.laoderorder = false;
-        _this3.getCart();
-      });
-    },
-    updateOrder: function updateOrder() {
-      var _this4 = this;
-      this.payload.total = parseInt(this.payload.price) * this.payload.quantity;
-      this.axios.post('/admin/cart_detail/updatecart', this.payload).then(function (response) {
         _this4.dialog = false;
         _this4.laoderorder = false;
         _this4.getCart();
+      });
+    },
+    updateOrder: function updateOrder() {
+      var _this5 = this;
+      this.payload.total = parseInt(this.payload.price) * this.payload.quantity;
+      this.axios.post('/admin/cart_detail/updatecart', this.payload).then(function (response) {
+        _this5.dialog = false;
+        _this5.laoderorder = false;
+        _this5.getCart();
       });
     },
     gotO: function gotO(link) {
@@ -6389,25 +6401,25 @@ __webpack_require__.r(__webpack_exports__);
       this.payload.quantity = this.quantity;
     },
     getCategory: function getCategory() {
-      var _this5 = this;
+      var _this6 = this;
       this.axios.get('/admin/category').then(function (response) {
         response.data.forEach(function (value) {
           var data = {
             id: value.id,
             name: value.category_name
           };
-          _this5.options.push(data);
+          _this6.options.push(data);
         });
       });
     },
     getCart: function getCart() {
-      var _this6 = this;
+      var _this7 = this;
       this.axios.get('/admin/cart').then(function (response) {
-        _this6.cart_order = response.data;
-        _this6.totals = response.data.cart_total ? response.data.cart_total : 0;
+        _this7.cart_order = response.data;
+        _this7.totals = response.data.cart_total ? response.data.cart_total : 0;
         if (response.data.length == 0) return;
         if (response.data.cart_detail.length) {
-          _this6.save_Order = false;
+          _this7.save_Order = false;
         }
       });
     },
@@ -6415,7 +6427,7 @@ __webpack_require__.r(__webpack_exports__);
       var input = event.target;
       if (input.files) {
         Object.values(input.files).forEach(function (dataFile) {
-          var _this7 = this;
+          var _this8 = this;
           var split = dataFile['type'].split("/");
           var data = {
             type: dataFile['type'],
@@ -6425,7 +6437,7 @@ __webpack_require__.r(__webpack_exports__);
           var val = true;
           var reader = new FileReader();
           reader.onload = function (e) {
-            _this7.payload.image = e.target.result;
+            _this8.payload.image = e.target.result;
             // this.submit(data);
           };
 
@@ -6435,15 +6447,15 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getProduct: function getProduct() {
-      var _this8 = this;
+      var _this9 = this;
       this.axios.get('/admin/product').then(function (response) {
-        _this8.items = response.data;
+        _this9.items = response.data;
       });
     },
     deleteItem: function deleteItem(data) {
-      var _this9 = this;
+      var _this10 = this;
       this.axios["delete"]('/admin/product/' + data.id).then(function (response) {
-        _this9.getProduct();
+        _this10.getProduct();
       });
     },
     editItem: function editItem(data) {
@@ -34969,6 +34981,15 @@ var render = function () {
                   solo: "",
                   dense: "",
                   "hide-details": "",
+                  clearable: "",
+                },
+                on: { input: _vm.searchProduct },
+                model: {
+                  value: _vm.name_search,
+                  callback: function ($$v) {
+                    _vm.name_search = $$v
+                  },
+                  expression: "name_search",
                 },
               }),
               _vm._v(" "),
@@ -34982,12 +35003,13 @@ var render = function () {
                   solo: "",
                   clearable: "",
                 },
+                on: { change: _vm.searchProduct },
                 model: {
-                  value: _vm.payload.category_id,
+                  value: _vm.category_search,
                   callback: function ($$v) {
-                    _vm.$set(_vm.payload, "category_id", $$v)
+                    _vm.category_search = $$v
                   },
-                  expression: "payload.category_id",
+                  expression: "category_search",
                 },
               }),
             ],

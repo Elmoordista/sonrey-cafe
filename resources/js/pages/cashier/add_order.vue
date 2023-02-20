@@ -2,7 +2,7 @@
     <div class="d-flex" id="d-order-wrapper">
         <div class="add-order-wrapper">
           <div class="d-flex pa-5 search-bar" >
-            <v-text-field label="product name" solo dense hide-details></v-text-field>
+            <v-text-field label="product name" solo dense hide-details v-model="name_search" @input="searchProduct" clearable></v-text-field>
             <v-select
             item-text="name"
             item-value="id"
@@ -11,8 +11,8 @@
             dense
             solo
             clearable
-            v-model="payload.category_id"
-            
+            v-model="category_search"
+            @change="searchProduct"
             ></v-select>
           </div>
           <v-col cols="12 d-flex " id="left-list-wrapper2">
@@ -167,6 +167,8 @@ export default {
     dialog:false,
     drawer: null,
     loading: false,
+    category_search: '',
+    name_search: '',
     laoderorder: false,
     isEdit: false,
     save_Order: true,
@@ -210,6 +212,15 @@ export default {
     saveOrder(){
       this.axios.post('/admin/order',this.cart_order).then((response) => {
          this.getCart()
+      })
+    },
+    searchProduct(){
+      var payload = {
+        name: this.name_search,
+        cat_id: this.category_search,
+      }
+      this.axios.post('/admin/product/searchproduct',payload).then((response) => {
+       this.items = response.data;
       })
     },
     cancelOrder(){

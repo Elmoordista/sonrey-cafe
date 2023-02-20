@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(ProductController::class)->group(function () {
     Route::delete('product/{id}', 'deleteProduct');
+    Route::post('product/searchproduct', 'searchproduct');
 });
 Route::controller(CategoryController::class)->group(function () {
     Route::post('category/chagestatus', 'chageStatus');
