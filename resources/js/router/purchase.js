@@ -27,12 +27,12 @@ export default [
       },
       {
         path: `/purchase/order_list`,
-        name: `order_list`,
+        name: `purchase_list`,
         component: order_list
       },
       {
         path: `/purchase/:id/order_details`,
-        name: `order_details`,
+        name: `purchase_details`,
         component: order_details
       },
     ],

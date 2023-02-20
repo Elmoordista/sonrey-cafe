@@ -8195,11 +8195,11 @@ var uri = 'purchase';
     component: _pages_purchase_total_sales__WEBPACK_IMPORTED_MODULE_2__["default"]
   }, {
     path: "/purchase/order_list",
-    name: "order_list",
+    name: "purchase_list",
     component: _pages_cashier_order_list__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: "/purchase/:id/order_details",
-    name: "order_details",
+    name: "purchase_details",
     component: _pages_cashier_order_details__WEBPACK_IMPORTED_MODULE_4__["default"]
   }]
 }]);
