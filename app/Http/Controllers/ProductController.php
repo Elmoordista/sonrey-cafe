@@ -55,6 +55,21 @@ class ProductController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    public function searchproduct(Request $request)
+    {
+        try {
+           $sql = Product::query();
+           if($request->name){
+                $sql->where('product_name','LIKE',"%".$request->name."%");
+           }
+           if($request->cat_id){
+                $sql->where('category_id',$request->cat_id);
+           }
+           return $sql->get();
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
     /**
      * Display the specified resource.
