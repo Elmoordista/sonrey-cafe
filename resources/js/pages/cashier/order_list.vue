@@ -62,8 +62,8 @@
       <template v-slot:item.action="{ item }">
         <div>
           <v-icon @click="viewData(item)">mdi-eye</v-icon>
-          |
-          <v-icon @click="deleteUser(item)">mdi-delete</v-icon>
+          <!-- |
+          <v-icon @click="deleteOrder(item)">mdi-delete</v-icon> -->
         </div>
       </template>
     </v-data-table>
@@ -138,9 +138,9 @@
       viewData(item){
           this.$router.push({ name: 'order_details' , params: { id: item.id}})
       },
-      deleteUser(item){
-          this.axios.delete('/admin/client/'+item.id).then((response) => {
-             this.getUser();
+      deleteOrder(item){
+          this.axios.delete('/admin/order/'+item.id).then((response) => {
+             this.getOrder()
           })
       },
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -13,6 +14,36 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function login(Request $request)
+    {
+        
+        try {
+            $login = $this->validate($request, [
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+
+
+
+            $user = Client::where('email', $request->email)
+            // ->where('is_validated',1)
+            ->first();
+
+
+            if (!Auth::attempt($login) || !$user) {
+                return response(['message' => 'login Credentials are incorrect'], 500);
+            }
+
+            $token = $user->createToken('authToken')->accessToken;
+
+
+            return response(['access_token' => $token]);
+            return response(['access_token' => $token, 'client_id' => $user->id]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function index()
     {
         try {
@@ -49,6 +80,31 @@ class ClientController extends Controller
                 Client::where('id', $request->id)->update($request->toArray());
             }
             else{
+                $request['password'] = bcrypt($request['password']);
+                return Client::create($request->toArray());
+            }
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+    }
+
+    public function register(Request $request)
+    {
+        try {
+            if (preg_match('#^data:image.*?base64,#', $request->image)) {
+                 $request['image'] = $this->uploadImage($request);
+            }
+
+            if(isset($request->id)){
+                Client::where('id', $request->id)->update($request->toArray());
+            }
+            else{
+                $request['password'] = bcrypt($request['password']);
                 return Client::create($request->toArray());
             }
         } catch (Exception $e) {

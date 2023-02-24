@@ -6934,10 +6934,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    deleteUser: function deleteUser(item) {
+    deleteOrder: function deleteOrder(item) {
       var _this4 = this;
-      this.axios["delete"]('/admin/client/' + item.id).then(function (response) {
-        _this4.getUser();
+      this.axios["delete"]('/admin/order/' + item.id).then(function (response) {
+        _this4.getOrder();
       });
     }
   }
@@ -35965,18 +35965,6 @@ var render = function () {
                         },
                       },
                       [_vm._v("mdi-eye")]
-                    ),
-                    _vm._v("\n        |\n        "),
-                    _c(
-                      "v-icon",
-                      {
-                        on: {
-                          click: function ($event) {
-                            return _vm.deleteUser(item)
-                          },
-                        },
-                      },
-                      [_vm._v("mdi-delete")]
                     ),
                   ],
                   1

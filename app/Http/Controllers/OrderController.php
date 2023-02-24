@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Cart_detail;
 use App\Models\Order;
 use App\Models\Order_detail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -114,8 +116,47 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy($id)
     {
-        //
+        return Order::where('id',$id)->delete();
+    }
+
+    public function addorder(Request $request)
+    {
+        $request['total'] = $request->cart_total;
+        $status = 0;
+        $cart = Cart::where('id',$request->cart_id)->with('cart_detail')->first();
+        
+        if($cart){
+            $status = count($cart->cart_detail) == count($request->cart_order) ? 0 : 1;
+            $cart->update(['status'=>$status]);
+        }
+
+        $request['client_id'] = Auth::user()->id;
+        $order = Order::create($request->toArray());
+
+        foreach($request->cart_order as $cart_details){
+            $var = array(
+                'order_id'=> $order->id,
+                'quantity'=> $cart_details['quantity'],
+                'product_id'=> $cart_details['product_id'],
+                'total'=> $cart_details['total'],
+            );            
+            $orderdetail = Order_detail::create($var);
+
+            if($orderdetail){
+                $cart->update(['cart_total'=>($cart->cart_total - $cart_details['total'])]);
+                Cart_detail::where('product_id',$cart_details['product_id'])->where('cart_id',$cart->id)->delete();
+            }
+        }
+
+        return $order;
+    }
+    public function getuserorder()
+    {
+       $user = Auth::user();
+
+        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->first();
+        
     }
 }
