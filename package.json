@@ -24,7 +24,10 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "chart.js": "^4.1.2",
         "vue-axios": "^3.5.2",
+        "vue-chartjs": "^3.5.1",
+        "vue-moment": "^4.1.0",
         "vue-router": "^3.6.5",
         "vuetify": "^2.6.12"
     }
