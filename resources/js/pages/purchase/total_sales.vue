@@ -164,9 +164,9 @@
         </v-card>
         <div class="d-flex mt-5" id="graphs">
            <v-card class="pa-5">
-             <v-card-title class="pa-0 bold d-flex justify-content-between">Most order Food   <h4 class="mb-0">Total Price: ₱ {{most_order_food.length ? most_order_food.total : 0}}</h4></v-card-title>
+             <v-card-title class="pa-0 bold d-flex justify-content-between">Most order Food   <h4 class="mb-0">Total Price: ₱ {{most_order_food != false ? most_order_food.total : 0}}</h4></v-card-title>
               <hr class="mb-10">
-             <div class="d-flex" id="most-order-wrapper" v-if="most_order_food.length">
+             <div class="d-flex" id="most-order-wrapper" v-if="most_order_food != false">
                <v-img  class="ma-auto" id="v-image-wrapper"
                     max-height="800"
                     max-width="600"
@@ -354,7 +354,7 @@ export default {
             this.mostorder['labels'] = response.data.top_product_order.label;
             this.mostorder['datasets'][0]['data'] = response.data.top_product_order.data;
             this.mostorder['datasets'][0]['backgroundColor'] = response.data.top_product_order.backgroundColor;
-            this.most_order_food =  response.data.most_order == null ? [] : response.data.most_order;
+            this.most_order_food =  response.data.most_order == null ? false : response.data.most_order;
             
         })
     },
