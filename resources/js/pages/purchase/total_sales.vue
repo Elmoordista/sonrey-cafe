@@ -166,7 +166,7 @@
            <v-card class="pa-5">
              <v-card-title class="pa-0 bold d-flex justify-content-between">Most order Food   <h4 class="mb-0">Total Price: ₱ {{most_order_food.total ? most_order_food.total : 0}}</h4></v-card-title>
               <hr class="mb-10">
-             <div class="d-flex" id="most-order-wrapper" v-if="most_order_food">
+             <div class="d-flex" id="most-order-wrapper" v-if="most_order_food.length">
                <v-img  class="ma-auto" id="v-image-wrapper"
                     max-height="800"
                     max-width="600"
@@ -175,8 +175,8 @@
                <h4>Name: {{most_order_food.product_name}}</h4>
              </div>
              <div class="d-flex" id="most-order-wrapper" v-else>
-               <v-img  class="ma-auto" id="v-image"
-                    max-height="600"
+               <v-img  class="ma-auto" id="v-image-wrapper"
+                    max-height="800"
                     max-width="600"
                     :src="noimage">
                </v-img>
@@ -186,7 +186,18 @@
            <v-card class="pa-5">
               <v-card-title class="pa-0">Top {{mostorder.datasets[0].data.length}} most order Food</v-card-title>
               <hr>
-              <pie :chartData="mostorder"></pie>
+              <template v-if="mostorder.labels.length">
+                <pie :chartData="mostorder"></pie>
+              </template>
+              <template v-else>
+                  <div>
+                      <v-img  class="ma-auto mt-10"
+                          max-height="500"
+                          max-width="400"
+                           src="/empty1.png">
+                    </v-img>
+                  </div>
+              </template>
            </v-card>
         </div>
     </div>
