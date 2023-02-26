@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use Validator;
 
 use App\Models\Admin;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AdminController extends Controller
 {
@@ -13,6 +16,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     use ValidatesRequests;
 
      public function login(Request $request)
      {
@@ -26,6 +30,10 @@ class AdminController extends Controller
      }
 
     public function index()
+    {
+        return Admin::orderBy('role','ASC')->get();
+    }
+    public function getAdmin()
     {
         return Auth::user();
     }
@@ -52,7 +60,36 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // try {
+           if(isset($request->id)){
+                $request->validate([
+                    'email' => 'email|required|unique:admins,email,'.$request->id,
+                ]);
+               if($request['password']){
+                   $request['password'] = bcrypt($request['password']);
+               }
+               else{
+                unset($request['password']);
+               }
+ 
+               unset($request['confirmpassword']);
+               Admin::where('id', $request->id)->update($request->toArray());
+           }
+           else{
+                $request->validate([
+                    'email' => 'email|required|unique:admins,email,',
+                    'password' => 'required',
+                    'confirmpassword' => 'required',
+                ]);
+
+               $request['password'] = bcrypt($request['password']);
+               return Admin::create($request->toArray());
+           }
+           
+
+        // } catch (Exception $e) {
+        //     return response()->json(['message' => $e->getMessage()], 500);
+        // }
     }
 
     /**
@@ -95,8 +132,20 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Admin $admin)
+    public function destroy($id,$role)
     {
-        //
+      try {
+        $account = Admin::where('role',$role)->get();
+        if(count($account) == 1){
+            return response()->json(['message' => $account], 422);
+        }
+        else{
+            Admin::where('id',$id)->delete();
+            return response()->json(['message' => 'delete success'],200);
+        }
+        
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

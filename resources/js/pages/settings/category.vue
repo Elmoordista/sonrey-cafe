@@ -73,14 +73,15 @@
             persistent
             max-width="400px"
           >
-            <v-card id="modal-wrapper">
+            <v-card id="modal-wrapper" class="pa-5">
+              <v-card-title class="pa-0">Add Category</v-card-title>
+              <hr>
                 <div class="text-center">
                  <div class="item-wrapper d-flex flex-column">
-                    <h4>Add Category</h4>
                       <v-icon dark color="#000" size="25" id="closemodal" @click="closeDialog()">
                         mdi-close
                       </v-icon>
-                    <div class="add-image-wrapper" @click="getImage">
+                    <div class="add-image-wrapper mb-0" @click="getImage" >
                           <h4 v-if="payload.image_url == ''">Click to add new Photo</h4>
                          <v-img v-else
                           :src="payload.image_url" id="selected-image"
@@ -92,10 +93,9 @@
                     <v-text-field
                       label="Category name"
                       filled
-                      rounded
+                      
                       hide-details
-                      dense
-                      solo
+                   
                       v-model="payload.category_name"
                       clearable
                       background-color="white"
@@ -104,17 +104,15 @@
             
                     <v-select
                     item-text="name"
+                    class="mb-5"
                     item-value="id"
                     :items="options"
                     label="Active"
-                    dense
                     solo
-                    rounded
-                    clearable
+                    hide-details
                     v-model="payload.status"
                     ></v-select>
-    
-                       <v-btn dark :loading="loading" @click="saveCategory">
+                       <v-btn dark :loading="loading" @click="saveCategory" height="50">
                         Save new category
                       </v-btn>
                   </div>
@@ -170,6 +168,7 @@
         
         this.axios.post('/admin/category',payload).then((response) => {
            this.getCategory();
+           this.$awn.success('Update status successfully')
         })
       },
       editUser(item){
@@ -180,24 +179,31 @@
              this.getCategory();
           })
       },
-    saveCategory(){
-        this.loading = true;
+      saveCategory(){
+        if(this.payload.category_name == ''){
+          return this.$awn.warning('Category name required')
+        }
+          this.loading = true;
         this.axios.post('/admin/category',this.payload).then((response) => {
             this.loading = false;
             this.closeDialog();
             this.getCategory();
+            if(this.payload.id){
+              return this.$awn.success('Update category successfully')
+            }
+            this.$awn.success('New category added successfully')
         })
-    },
+      },
       closeDialog(){
         this.dialog = false;
         this.payload.image_url = '';
         this.payload.category_name = '';
-        this.payload.status = '';
+        this.payload.status = 1;
       },
       showDialog(){
         this.dialog = true;
       },
-    getFiles(event) {
+      getFiles(event) {
           var input = event.target;
     
           if (input.files) {
@@ -225,7 +231,7 @@
       },
       editCategory(item){
         this.dialog = true
-       this.payload = item;
+        this.payload = Object.assign(this.payload,item);
       },
     }
   }

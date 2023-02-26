@@ -35,6 +35,7 @@ Route::controller(CategoryController::class)->group(function () {
 Route::controller(AdminController::class)->group(function () {
     Route::post('admin/login', 'login');
     Route::get('admin/checkuser', 'checkuser');
+    Route::delete('admin/{id}/{role}', 'destroy');
 });
 Route::controller(CartDetailController::class)->group(function () {
     Route::post('cart_detail/deleteproduct', 'deleteProduct');
@@ -43,6 +44,7 @@ Route::controller(CartDetailController::class)->group(function () {
 
 Route::controller(OrderController::class)->group(function () {
     Route::post('order/update_status', 'update_status');
+    Route::post('order/orderreport/{date}', 'orderReport');
 });
 
 

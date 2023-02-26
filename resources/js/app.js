@@ -6,6 +6,10 @@
 
 require('./bootstrap');
 
+window.Vue = require('vue').default;
+
+// import Vue from 'vue'
+
 import vuetify from './src/plugin/vuetify'
 import router from './router'
 
@@ -16,7 +20,25 @@ import App from './layout';
 
 import "../css/app.css"
 
-window.Vue = require('vue').default;
+import VueAWN from "vue-awesome-notifications"
+
+
+let options = {
+    labels: {
+        success: 'Success!',
+        warning: 'Warning!',
+        alert: 'Failed!',
+        confirm: 'Failed!',
+    },
+    position: 'top-right',
+    durations: {
+        global: 2000
+    }
+}
+
+Vue.use(VueAWN, options)
+
+
 
 Vue.use(VueAxios, axios)
 /**

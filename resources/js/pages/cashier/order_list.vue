@@ -119,6 +119,7 @@
         }
         this.axios.post('/admin/order/update_status',payload).then((response) => {
          this.getOrder();
+         this.$awn.success('Order status update successfully')
         })
       },
       searchStatus(){

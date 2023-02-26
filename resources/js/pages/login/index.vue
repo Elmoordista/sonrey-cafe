@@ -102,13 +102,13 @@ export default {
             localStorage.setItem("token", response.data[0].token);
             localStorage.setItem("role", response.data[0].role);
             thiss.$router.go({ name: "dashboard" });
-            thiss.text = "Successfully login";
-          } else if (response.data.message == "Unauthorised") {
-            thiss.snackbar = true;
-            thiss.text = "Unauthorised admin acount";
+            thiss.$awn.success('Successfully login')
+          } else if (response.data.message == "no account") {
+            // thiss.snackbar = true;
+            thiss.$awn.alert('Unauthorised account')
           } else {
-            thiss.snackbar = true;
-            thiss.text = "Invalid Email/Password";
+            // thiss.snackbar = true;
+            thiss.$awn.alert('Invalid Email/Password')
           }
         })
         .catch(function (error) {

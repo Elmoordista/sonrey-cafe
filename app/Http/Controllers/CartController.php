@@ -41,6 +41,7 @@ class CartController extends Controller
         try {
             $cart = [];
             $cart_status = Cart::where('status', 1)->where('client_id', 1)->first();
+
             if(empty($cart_status)){
                 $data = array(
                     'client_id' => 1,   
@@ -55,8 +56,8 @@ class CartController extends Controller
                 );
                 $cart = Cart::where('id',$cart_status->id)->update($data);
             }
-           
-            if($cart && $cart_status){
+
+            if($cart || $cart_status){
                 $cart_id = isset($cart->id) ? $cart->id : $cart_status->id;
                 $cart_product = Cart_detail::where('cart_id', $cart_id)->where('product_id',$request->id)->first();
 

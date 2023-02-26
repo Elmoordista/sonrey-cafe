@@ -139,6 +139,7 @@ padding: 40px;
 
 #v-image{
   border-radius: 10px;
+  height: 100px;
 }
 
 .product-info{
@@ -211,4 +212,16 @@ padding: 40px;
 
 .active-btn{
   background-color: #fff;
+}
+
+#router-view{
+    max-height: 780px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+#left-list{
+  max-width: 230px !important; 
+}
+#left-list .v-list{
+  padding-top: 0 !important;
 }

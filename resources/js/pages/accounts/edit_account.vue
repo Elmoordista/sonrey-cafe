@@ -5,7 +5,7 @@
       </div>
 
       <div>
-        <v-row>
+         <v-row>
           <v-col lg="6" md="6" sm="12">
             <div class="text-center mb-10">
               <div class="image-holder">
@@ -33,15 +33,15 @@
           <h4 >Email:</h4>
            <v-text-field class=""
             filled
-            dense
             placeholder="email"
             solo
             clearable
-            rounded
+            hide-details
+            append-icon="mdi-email"
             v-model="payload.email"
             background-color="white"
           ></v-text-field>
-           <h4 >Birthdate:</h4>
+           <h4 class="mt-5">Birthdate:</h4>
               <v-menu
               v-model="menu"
               :close-on-content-click="true"
@@ -55,9 +55,10 @@
                   v-model="payload.birth_date"
                   append-icon="mdi-calendar"
                   readonly
-                  rounded
+    
                   v-bind="attrs"
                   v-on="on"
+                  hide-details
                   background-color="white"
                   solo
                 ></v-text-field>
@@ -66,26 +67,24 @@
                 v-model="payload.birth_date"
               ></v-date-picker>
             </v-menu>
-           <h4>Contact Number:</h4>
+           <h4 class="mt-5">Contact Number:</h4>
           <v-text-field
           class="text-center "
             filled
             solo
-            rounded
-            dense
+            hide-details
             placeholder="Contact Number"
             background-color="white"
             clearable
+            append-icon="mdi-phone"
             v-model="payload.number"
           ></v-text-field>
           </v-col>
          <v-col lg="6" md="6" sm="12">
-    
-          <h4 >Name: </h4>
+          <h4 class="mt-5">Name: </h4>
            <v-text-field class=""
             filled
-            dense
-            rounded
+            hide-details
             placeholder="name"
             solo
             clearable
@@ -97,47 +96,49 @@
           class="text-center "
             filled
             dense
-            rounded
             placeholder="role"
             solo
             background-color="white"
             clearable
             v-model="payload.role"
           ></v-text-field> -->
-           <h4>Username:</h4>
+           <h4 class="mt-5">Username:</h4>
           <v-text-field
-          class="text-center "
+          class="text-center"
             filled
             solo
-            dense
-            rounded
+            hide-details
             placeholder="username"
             background-color="white"
             clearable
             v-model="payload.username"
           ></v-text-field>
-           <h4>Password:</h4>
+           <h4 class="mt-5">Password:</h4>
           <v-text-field
           class="text-center "
             filled
             solo
-            dense
-            rounded
+            hide-details
             placeholder="password"
             background-color="white"
-            clearable
+            
+            :type="!showpassword1 ? 'password' : 'text'"
             v-model="payload.password"
+            @click:append="showpassword1=!showpassword1"
+            :append-icon="!showpassword1? 'mdi-eye' : 'mdi-eye-off' "
           ></v-text-field>
-           <h4>Confirm Password:</h4>
+           <h4 class="mt-5">Confirm Password:</h4>
           <v-text-field
-          class="text-center "
+            class="text-center "
             filled
             solo
-            dense
-            rounded
+            hide-details
             placeholder="confirmpassword"
             background-color="white"
-            clearable
+            
+            :type="!showpassword2 ? 'password' : 'text'"
+            @click:append="showpassword2=!showpassword2"
+            :append-icon="!showpassword2 ? 'mdi-eye' : 'mdi-eye-off' "
             v-model="payload.confirmpassword"
           ></v-text-field>
           </v-col>
@@ -160,6 +161,8 @@
       return {
         search: '',
         menu: false,
+        showpassword1: false,
+        showpassword2: false,
         payload: {
             email: '',
             birth_date:  (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
@@ -183,7 +186,8 @@
       getUser(){
           this.axios.get('/admin/client/'+`${this.$route.params.id}`).then((response) => {
             this.payload = response.data;
-            this.payload.confirmpassword = response.data.password;
+            this.payload.password = '';
+            this.payload.confirmpassword = '';
           })
       },
       getImage(){
@@ -211,11 +215,28 @@
             // }
         }
       },
+      // saveuser(){
+      //   delete this.payload.confirmpassword
+      //   this.axios.post('/admin/client',this.payload).then((response) => {
+      //      this.$router.push({ name: 'user_account'})
+      //   })
+      // }
       saveuser(){
+        var thiss = this;
+          if(this.payload.password != this.payload.confirmpassword){
+            return this.$awn.warning('Password and Confirm password not match');
+          }
         delete this.payload.confirmpassword
         this.axios.post('/admin/client',this.payload).then((response) => {
-           this.$router.push({ name: 'user_account'})
+           this.$awn.success('Account update successfully');
+           this.gotO('user_account')
         })
+        .catch(function (error)
+        {
+          Object.values(error.response.data.errors).forEach(element => {
+               thiss.$awn.warning(element[0]);
+          });
+        });
       }
       
     }

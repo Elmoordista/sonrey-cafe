@@ -40,20 +40,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        // try {
             if (preg_match('#^data:image.*?base64,#', $request->image)) {
                  $request['image'] = $this->uploadImage($request);
             }
 
+            $request->validate([
+                'product_name' => 'required',
+                'price' => 'required',
+            ]);
+
             if(isset($request->id)){
-                Product::where('id', $request->id)->update($request->toArray());
+                return Product::where('id', $request->id)->update($request->toArray());
             }
             else{
                 return Product::create($request->toArray());
             }
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
+        // } catch (Exception $e) {
+        //     return response()->json(['message' => $e->getMessage()], 500);
+        // }
     }
     public function searchproduct(Request $request)
     {

@@ -109,24 +109,24 @@
             persistent
             max-width="300px"
           >
-            <v-card id="modal-wrapper" class="pa-7">
+            <v-card id="modal-wrapper" class="pa-5">
                 <div class="text-center">
                  <div class="item-wrapper d-flex flex-column">
                     <div>
                          <v-img v-if="payload.image "
-                          max-height="160"
+                          max-height="200"
                           max-width="250"
                           :src="payload.image "
                           id="v-image"
-                          class="ma-auto"
+                          class="ma-auto v-image-wrapper"
                         >
                         </v-img>
                         <v-img v-else
-                          max-height="160"
+                          max-height="200"
                           max-width="250"
                           :src="noimage"
                           id="v-image"
-                          class="ma-auto"
+                          class="ma-auto v-image-wrapper"
                         >
                         </v-img>
                     </div>
@@ -206,12 +206,17 @@ export default {
     deleteCartProduct(item){
       this.axios.post('/admin/cart_detail/deleteproduct',item).then((response) => {
        this.getCart()
+      this.$awn.success('Delete order in cart successfully')
       })
     },
     saveOrder(){
-      this.axios.post('/admin/order',this.cart_order).then((response) => {
-         this.getCart()
-      })
+        this.$awn.asyncBlock(
+         this.axios.post('/admin/order',this.cart_order).then((response) => {
+            this.getCart()
+          }),
+          'Order added successfully',
+        )
+      
     },
     searchProduct(){
       var payload = {
@@ -227,12 +232,13 @@ export default {
       this.dialog = false
     },
     placeOrder(){
-      this.laoderorder = true;
+      // this.laoderorder = true;
       this.payload.total = parseInt(this.payload.price) * this.payload.quantity
       this.axios.post('/admin/cart',this.payload).then((response) => {
         this.dialog = false;
         this.laoderorder = false;
         this.getCart()
+        this.$awn.success('Place order successfully')
       })
     },
     updateOrder(){
@@ -240,6 +246,7 @@ export default {
       this.axios.post('/admin/cart_detail/updatecart', this.payload).then((response) => {
         this.dialog = false;
         this.laoderorder = false;
+        this.$awn.success('Update order successfully')
         this.getCart()
       })
     },
@@ -279,10 +286,8 @@ export default {
       this.axios.get('/admin/cart').then((response) => {
         this.cart_order = response.data;
         this.totals = response.data.cart_total ? response.data.cart_total : 0;
-        if(response.data.length == 0) return;
-        if(response.data.cart_detail.length){
-          this.save_Order = false;
-        }
+        // if(response.data.length == 0) return;
+          this.save_Order = this.totals ? false : true;
       })
     },
     getFiles(event) {
@@ -338,6 +343,9 @@ export default {
 <style>
   .v-input__control{
     width: 50px;
+  }
+  .v-image-wrapper{
+        height: 200px !important;
   }
 </style>
 

@@ -6,8 +6,12 @@ use App\Models\Cart;
 use App\Models\Cart_detail;
 use App\Models\Order;
 use App\Models\Order_detail;
+use App\Models\Product;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -158,5 +162,196 @@ class OrderController extends Controller
 
         return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->first();
         
+    }
+    public function productreport()
+    {
+       $user = Auth::user();
+
+        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->first();
+        
+    }
+
+    public function orderReport($date, Request $request)
+    {
+
+        // return Product::with('order_detail', function ($prog)  use ($request){
+        //     $prog->where('status', 3);
+        // })->get();
+
+        $orders = [];
+        $type = $date;
+        if($date == 'week' || $date=='range') {
+            $label_request = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
+            $period = CarbonPeriod::create(Carbon::parse($request->date_request['start']), Carbon::parse($request->date_request['end']));
+     
+            $week_dates = [];
+            foreach ($period as $date) {
+                $week_dates[]= $date->format('Y-m-d');
+            }
+
+            foreach($week_dates as $key => $dates) {
+                    $sum = Order::whereDate('created_at', $dates)->sum('total');
+                    $orders['label'][] = $type == 'week' ? $label_request[$key] : $dates;
+                    $orders['data'][] = (int)$sum ? (int) $sum : 0;
+            }
+
+            return response()->json(["total" =>  $orders, "most_order" => $this->mostOrderedFood(), "top_product_order" => $this->mostOrderedFoods()]);
+
+        }
+        else if($date == 'year') {
+            $label_month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ];
+
+            $dateFormatYear = date('Y', strtotime($request->month_request));
+            $y = Carbon::createFromFormat('Y', $dateFormatYear)->format('Y');
+            $dates = [];
+            for($i=1; $i<=12; $i++){
+                $dates[] = [
+                        Carbon::create($y, $i)->startOfMonth()->format('Y-m-d'),
+                        Carbon::create($y, $i)->lastOfMonth()->format('Y-m-d'),
+                ];
+            };
+            
+            foreach ($dates as $key => $date) {
+                $sum = Order::whereBetween('created_at',$date)->sum('total');
+                $orders['label'][] = $label_month[$key];
+                $orders['data'][] = (int)$sum ? (int) $sum : 0;
+              
+            }
+            return response()->json(["total" =>  $orders, "most_order" => $this->mostOrderedFood(), "top_product_order" => $this->mostOrderedFoods()]);
+
+        }
+        else {
+            return "sad";
+        }
+
+        // return Order::with('orderer')->get();
+    }
+
+    // public function orderReport($date, Request $request)
+    // {
+    //     $orders = [];
+    //     $final_order = [];
+    //     if($date == 'week' || $date=='range') {
+    //         $label_request = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
+    //         $period = CarbonPeriod::create(Carbon::parse($request->date_request['start']), Carbon::parse($request->date_request['end']));
+     
+    //         $week_dates = [];
+    //         foreach ($period as $date) {
+    //             $week_dates[]= $date->format('Y-m-d');
+    //         }
+
+    //         foreach($week_dates as $dates) {
+    //             $order = Order::whereDate('created_at',$dates)->with('orderer','details')->get();
+    //             if(count($order)){
+    //                 $orders [] = $order;
+    //             }
+    //         }
+
+    //         return $week_dates;
+
+            
+    //         foreach($orders as $getOrder){
+    //             foreach($getOrder as $data){
+    //                 foreach($data['details'] as $datas){
+    //                     $final_order[] = array(
+    //                         'time_order' => $data->created_at,
+    //                         'quantity' => $datas['quantity'],
+    //                         'customer_name' => $data['orderer']['fullname'],
+    //                         'product' => $datas['product']['name'],
+    //                         'price' => $datas['product']['price'],
+    //                         'total' => $datas['total'],
+    //                     );
+    //                 }
+    //             }
+    //         }
+    //         $total_amount = 0;
+    //         foreach(array_unique($final_order, SORT_REGULAR) as $getamount){
+    //             $total_amount = $total_amount + $getamount['total'];
+    //         }
+    //         // return array_unique($final_order);
+    //         return response()->json(["data" => array_unique($final_order, SORT_REGULAR), "total" => $total_amount]);
+    //         $label = $label_request;
+    //     }
+    //     else if($date == 'year') {
+    //         $label_month = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ];
+
+    //         $dateFormatYear = date('Y', strtotime($request->month_request));
+    //         $y = Carbon::createFromFormat('Y', $dateFormatYear)->format('Y');
+    //         $dates = [];
+    //         for($i=1; $i<=12; $i++){
+    //             $dates[] = [
+    //                 [
+    //                     Carbon::create($y, $i)->startOfMonth()->format('Y-m-d'),
+    //                     Carbon::create($y, $i)->lastOfMonth()->format('Y-m-d'),
+    //                 ],
+    //             ];
+    //         };
+
+    //         foreach ($dates as $key => $date) {
+    //             $order= Order::whereBetween('created_at',$dates)->with('orderer','details')->get();
+    //             if(count($order)){
+    //                 $orders [] = $order;
+    //             }
+              
+    //         }
+    //         foreach($orders as $getOrder){
+    //             foreach($getOrder as $data){
+    //                 foreach($data['details'] as $datas){
+    //                     $final_order[] = array(
+    //                         'time_order' => $data->created_at,
+    //                         'quantity' => $datas['quantity'],
+    //                         'customer_name' => $data['orderer']['fullname'],
+    //                         'product' => $datas['product']['name'],
+    //                         'price' => $datas['product']['price'],
+    //                         'total' => $datas['total'],
+    //                     );
+                        
+    //                 }
+    //             }
+    //         }
+    //         $total_amount = 0;
+    //         foreach(array_unique($final_order, SORT_REGULAR) as $getamount){
+    //             $total_amount = $total_amount + $getamount['total'];
+    //         }
+    //         // return array_unique($final_order);
+    //         return response()->json(["data" => array_unique($final_order, SORT_REGULAR), "total" => $total_amount]);
+    //     }
+    //     else {
+    //         return "sad";
+    //     }
+
+    //     // return Order::with('orderer')->get();
+    // }
+    public function mostOrderedFood(){   
+        return DB::table('orders')
+                ->leftJoin('order_details','order_details.order_id','=','orders.id')
+                ->leftJoin('products','products.id','=','order_details.product_id')
+                ->selectRaw('products.*, sum(orders.total) total')
+                ->where('orders.status',3)
+                ->groupBy('order_details.product_id')
+                ->orderBy('total','desc')
+                ->take(1)
+                ->first();
+    }
+    public function mostOrderedFoods(){
+        $prods = [];   
+        $datas = DB::table('orders')
+                ->leftJoin('order_details','order_details.order_id','=','orders.id')
+                ->leftJoin('products','products.id','=','order_details.product_id')
+                ->selectRaw('products.*, sum(orders.total) total')
+                ->where('orders.status',3)
+                ->groupBy('order_details.product_id')
+                ->orderBy('total','desc')
+                ->take(5)
+                ->get();
+
+        foreach($datas as $key => $data) {
+                $prods['label'][] = $data->product_name;
+                $prods['data'][] = (int)$data->total? (int)$data->total : 0;
+                $prods['backgroundColor'][] = '#'.str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+                
+        }
+
+        return $prods;
     }
 }

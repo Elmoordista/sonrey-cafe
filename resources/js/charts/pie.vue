@@ -1,5 +1,5 @@
 <template>
-  <LineChartGenerator
+  <Pie
     :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
@@ -13,38 +13,28 @@
 </template>
 
 <script>
-import { Line as LineChartGenerator } from 'vue-chartjs/legacy'
+import { Pie } from 'vue-chartjs/legacy'
 
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  LineElement,
-  LinearScale,
-  CategoryScale,
-  PointElement
+  ArcElement,
+  CategoryScale
 } from 'chart.js'
 
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,
-  LinearScale,
-  CategoryScale,
-  PointElement
-)
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
 
 export default {
-  name: 'LineChart',
+  name: 'PieChart',
   components: {
-    LineChartGenerator
+    Pie
   },
   props: {
     chartId: {
       type: String,
-      default: 'line-chart'
+      default: 'pie-chart'
     },
     datasetIdKey: {
       type: String,

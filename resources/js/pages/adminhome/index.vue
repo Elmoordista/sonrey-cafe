@@ -10,6 +10,7 @@
             max-height="110"
             max-width="110"
             src="/adminlogo.png"
+            class="ml-8"
           ></v-img>
         <v-spacer></v-spacer>
         <!-- <div> -->
@@ -42,8 +43,8 @@
       role:'',
       links: [
         {
-        text: "Category  &  Roles",
-          route: "settings",
+        text: "Category",
+          route: "category",
         },
         {
         text: "Edit / Add items",
@@ -51,11 +52,11 @@
         },
         {
           text: "Purchase History",
-          route: "purchase",
+          route: "history",
         },
         {
           text: "Account Management",
-          route: "accounts",
+          route: "employee_account",
         },
       ],
     }),

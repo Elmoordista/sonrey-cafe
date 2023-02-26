@@ -48,10 +48,11 @@
             persistent
             max-width="400px"
           >
-            <v-card id="modal-wrapper">
+            <v-card id="modal-wrapper" class="pa-5">
+              <v-card-title class="pa-0">Add item</v-card-title>
+              <hr>
                 <div class="text-center">
                  <div class="item-wrapper d-flex flex-column">
-                    <h4>Add item</h4>
                       <v-icon dark color="#000" size="25" id="closemodal" @click="closeDialog()">
                         mdi-close
                       </v-icon>
@@ -67,9 +68,7 @@
                     <v-text-field
                       label="Item Name"
                       filled
-                      rounded
                       hide-details
-                      dense
                       v-model="payload.product_name"
                       clearable
                       background-color="white"
@@ -78,11 +77,10 @@
                     class="text-center"
                       label="Item Price"
                       filled
-                      rounded
-                      dense
                       background-color="white"
                       v-model="payload.price"
                       clearable
+                      @keydown="isNumber($event)"
                       hide-details
                     ></v-text-field>
                      <v-select
@@ -92,11 +90,10 @@
                     label="Category"
                     dense
                     solo
-                    rounded
-                    clearable
+                    
                     v-model="payload.category_id"
                     ></v-select>
-                       <v-btn dark @click="saveProduct" :loading="loading">
+                       <v-btn dark @click="saveProduct" :loading="loading" height="50">
                         Save new Item
                       </v-btn>
                   </div>
@@ -129,6 +126,14 @@ export default {
   methods: {
     gotO(link){
       this.$router.push({ name: link})
+    },
+    isNumber(e){
+      const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', 'Backspace'];
+      const keyPressed = e.key;
+
+      if (!keysAllowed.includes(keyPressed)) {
+        e.preventDefault()
+      }
     },
     getImage(){
       this.$refs.file_input.click()
@@ -179,10 +184,11 @@ export default {
     },
     editItem(data){
       this.dialog = true;
-      this.payload.product_name = data.product_name;
-      this.payload.price = data.price;
-      this.payload.id = data.id;
-      this.payload.image = data.image;
+      this.payload = Object.assign(this.payload, data)
+      // this.payload.product_name = data.product_name;
+      // this.payload.price = data.price;
+      // this.payload.id = data.id;
+      // this.payload.image = data.image;
     },
     closeDialog(){
       this.dialog = false;
@@ -190,15 +196,31 @@ export default {
       this.payload.price = '';
       this.payload.id = '';
       this.payload.image = '';
-      this.payload.category_id = '';
+      this.payload.category_id = 1;
     },
     saveProduct(){
       this.loading = true;
+      var thiss = this;
+      var edit = false;
+      if(this.payload.id){
+        edit = true;
+      }
       this.axios.post('admin/product',this.payload).then((response) => {
          this.loading = false;
-        this.closeDialog();
-        this.getProduct();
+         this.closeDialog();
+         this.getProduct();
+         if(edit){
+          return this.$awn.success('Update product successfully');
+         }
+        this.$awn.success('New category added successfully');
       })
+      .catch(function (error)
+      {
+        thiss.loading = false;
+        Object.values(error.response.data.errors).forEach(element => {
+            thiss.$awn.warning(element[0]);
+        });
+      });
     }
   },
   watch: {
