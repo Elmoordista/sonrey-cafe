@@ -66,7 +66,7 @@
          this.$router.push({ name: 'add_order'})
       }
       else if(this.role == 3){
-
+        this.$router.push({ name: 'orders'})
       }
       else{
         this.$router.push({ name: 'total_sales'})

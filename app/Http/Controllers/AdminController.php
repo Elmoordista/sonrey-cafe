@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 
 use App\Models\Admin;
+use App\Models\Fcmtoken;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,14 @@ class AdminController extends Controller
      {
         if (Auth::guard('admin')->attempt(['email' => $request['email'], 'password' =>  $request['password']])) {
             $user = Auth::guard('admin')->user();
+            $fcm_token = Fcmtoken::where('fcm_token', $request->fcm_token)->first();
+
+            if (!$fcm_token) {
+                Fcmtoken::create([
+                    'fcm_token' => $request->fcm_token,
+                    'client_id' => $user->id
+                ]);
+            }
             $user['token'] =  $user->createToken('MyApp',['admin'])->accessToken->token;
             return  ['message' => 'success',  $user];
         } else {

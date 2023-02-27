@@ -28,6 +28,10 @@ Route::controller(ClientController::class)->group(function () {
     Route::post('client/register', 'register');
 });
 
+Route::controller(OrderController::class)->group(function () {
+    Route::post('order/sendNotification', 'sendNotification');
+});
+
 Route::middleware('auth:client')->group(function () {
  
     

@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-            return Category::all();
+            return Category::where('status',1)->get();
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

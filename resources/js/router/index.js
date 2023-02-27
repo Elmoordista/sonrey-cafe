@@ -8,6 +8,7 @@ import login from '../pages/login'
 import purchase from './purchase'
 import cashier from './cashier'
 import settings from './settings'
+import kitchen from './kitchen'
 
 
 Vue.use(VueRouter)
@@ -18,6 +19,7 @@ const routess = [
     ...purchase,
     ...settings,
     ...cashier,
+    ...kitchen,
 ]
 const router = new VueRouter({
         base: '/',

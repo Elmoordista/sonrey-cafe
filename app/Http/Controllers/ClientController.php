@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Fcmtoken;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,11 +24,19 @@ class ClientController extends Controller
                 'password' => 'required',
             ]);
 
+            $fcm_token = FcmToken::where('fcm_token', $request->fcm_token)->first();
 
             $user = Client::where('email', $request->email)
             // ->where('is_validated',1)
             ->first();
 
+
+            if (!$fcm_token) {
+                Fcmtoken::create([
+                    'fcm_token' => $request->fcm_token,
+                    'client_id' => $user->id
+                ]);
+            }
 
             if (!Auth::attempt($login) || !$user) {
                 return response(['message' => 'login Credentials are incorrect'], 500);

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Cart_detail;
+use App\Models\Client;
+use App\Models\Fcmtoken;
 use App\Models\Order;
 use App\Models\Order_detail;
 use App\Models\Product;
@@ -23,6 +25,16 @@ class OrderController extends Controller
     public function index()
     {
         return Order::with('client')->get();
+    }
+
+    public function getOrderList()
+    {
+        $now = Carbon::now()->format('Y-m-d');
+        $data = Order::where('status',1)->Orwhere('status',3)->whereDate('created_at', $now)->with('order_detail')->get();
+        foreach($data as $key => $datas){
+            $data[$key]['order_num'] = $key + 1;
+        }
+        return $data;
     }
 
     /**
@@ -67,6 +79,53 @@ class OrderController extends Controller
         return $order;
     }
 
+    public function sendNotification()
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+
+        $FcmToken = Fcmtoken::whereNotNull('fcm_token')->pluck('fcm_token')->all();
+
+        $serverKey = 'AAAADtOcBZU:APA91bFqoJtVLiT0GVk2hSHlpxJ5VMZWEMIwNjLHjuQ2xr00A_7-BeJsXDL_N08QIcq2j6W-a1-0VSYBB-8EhhtdqSE7wXhWW_0XOSWPvkRczAb8Y3ZdeON48B02Vq9XpMxOD4U4c5-r'; // ADD SERVER KEY HERE PROVIDED BY FCM
+    
+        $data = [
+            "registration_ids" => $FcmToken,
+            "notification" => [
+                "title" => 'New order added',
+                "body" => 'New order added',  
+            ]
+        ];
+
+        $encodedData = json_encode($data);
+    
+
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type: application/json',
+        ];
+    
+        $ch = curl_init();
+        
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+        // Execute post
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }        
+        // Close connection
+        curl_close($ch);
+        // // FCM response
+        // dd($result);
+    }
+
+
     public static function generateRandomString($length = 10) {
         $string = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
         if(Order::where('order_ref',$string)->exists()){
@@ -77,6 +136,9 @@ class OrderController extends Controller
         }
     }
     public function update_status(Request $request) {
+        if($request->status == 1 || $request->status == 3){
+            $this->sendNotification();
+        }
         return Order::where('id',$request->id)->update(['status'=>$request->status]);
     }
 
@@ -190,7 +252,7 @@ class OrderController extends Controller
             }
 
             foreach($week_dates as $key => $dates) {
-                    $sum = Order::whereDate('created_at', $dates)->sum('total');
+                    $sum = Order::whereDate('created_at', $dates)->where('status',3)->sum('total');
                     $orders['label'][] = $type == 'week' ? $label_request[$key] : $dates;
                     $orders['data'][] = (int)$sum ? (int) $sum : 0;
             }
@@ -212,7 +274,7 @@ class OrderController extends Controller
             };
             
             foreach ($dates as $key => $date) {
-                $sum = Order::whereBetween('created_at',$date)->sum('total');
+                $sum = Order::whereBetween('created_at',$date)->where('status',3)->sum('total');
                 $orders['label'][] = $label_month[$key];
                 $orders['data'][] = (int)$sum ? (int) $sum : 0;
               
