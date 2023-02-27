@@ -175,9 +175,29 @@
           this.$router.push({ name: 'edit_account' , params: { id: item.id}})
       },
       deleteCategory(item){
-          this.axios.delete('/admin/category/'+item.id).then((response) => {
-             this.getCategory();
-          })
+         let notifier = this.$awn;
+          let onOk = () => {this.deleteConfirm(item)};
+          notifier.confirm(
+            `Are you you want to delete this ${item.category_name} category?`,
+            onOk,
+            false,
+            {
+              labels: {
+                confirm: 'Delete confirmation'
+              }
+            }
+          )
+      },
+      deleteConfirm(item){
+        let thiss = this;
+        this.$awn.asyncBlock(
+           thiss.axios.delete('/admin/category/'+item.id).then((response) => {
+             thiss.getCategory();
+            thiss.$awn.success(`Category ${item.category_name} deleted successfully`)
+            }),
+          false,
+        )
+        
       },
       saveCategory(){
         if(this.payload.category_name == ''){
