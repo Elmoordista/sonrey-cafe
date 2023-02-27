@@ -14,7 +14,6 @@
                     
                     <v-card-title primary-title>
                       <v-img src="/adminlogo.png" width="150" height="150" id="selected-image"></v-img>
-                      <h4>Administrator</h4>
                     </v-card-title>
                     <v-form id="v_form">
                       <v-text-field

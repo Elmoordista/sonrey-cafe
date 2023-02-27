@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
       <div class="h1 text-center mb-10">
-        Add Employees Account 
+        Add User Account 
       </div>
 
       <div>
