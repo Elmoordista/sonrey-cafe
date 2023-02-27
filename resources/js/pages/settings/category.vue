@@ -174,8 +174,8 @@
       editUser(item){
           this.$router.push({ name: 'edit_account' , params: { id: item.id}})
       },
-      deleteUser(item){
-          this.axios.delete('/admin/client/'+item.id).then((response) => {
+      deleteCategory(item){
+          this.axios.delete('/admin/category/'+item.id).then((response) => {
              this.getCategory();
           })
       },
