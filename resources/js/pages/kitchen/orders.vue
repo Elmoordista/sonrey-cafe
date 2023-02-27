@@ -22,7 +22,7 @@
                                 <span class="prev"><v-icon size="50">mdi-arrow-left-bold-circle</v-icon></span>
                         </template>
 
-                        <template slot="next" v-if="items.length > 10">
+                        <template slot="next" v-if="processItem.length > 10">
                             <span class="next"><v-icon size="50">mdi-arrow-right-bold-circle</v-icon></span>
                         </template>
                         <template v-for="(data , ind) in processItem">

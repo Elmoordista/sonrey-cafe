@@ -21,6 +21,14 @@ class CategoryController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    public function getAllCategory()
+    {
+        try {
+            return Category::all();
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.

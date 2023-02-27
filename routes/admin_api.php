@@ -31,6 +31,7 @@ Route::controller(ProductController::class)->group(function () {
 });
 Route::controller(CategoryController::class)->group(function () {
     Route::post('category/chagestatus', 'chageStatus');
+    Route::get('category/getAllCategory', 'getAllCategory');
 });
 Route::controller(AdminController::class)->group(function () {
     Route::post('admin/login', 'login');

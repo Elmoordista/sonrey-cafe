@@ -156,7 +156,7 @@
         this.$router.push({ name: link})
       },
       getCategory(){
-        this.axios.get('/admin/category').then((response) => {
+        this.axios.get('/admin/category/getAllCategory').then((response) => {
           this.items = response.data;
         })
       },
