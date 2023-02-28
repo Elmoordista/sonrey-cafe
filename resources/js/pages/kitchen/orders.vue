@@ -160,10 +160,10 @@ import carousel from 'vue-owl-carousel'
     },
     mounted(){
         this.activateNotification();
-        this.initialize()
+        this.initialize(false)
     },
     methods:{
-        initialize(){
+        initialize(bool){
             this.resetVal();
             this.axios.get('/admin/order/orders').then((response) => {
                 this.items = response.data
@@ -174,6 +174,9 @@ import carousel from 'vue-owl-carousel'
                 // this.processItem = this.items.filter(x => x.status === 1)
                 this.processCount = process.length > 0 ? process.length : 0;
                 this.doneCount = doneS.length > 0 ? doneS.length : 0;
+                if(bool){
+                    this.$awn.success('New order Recieved')
+                }
             })
         },  
         resetVal(){

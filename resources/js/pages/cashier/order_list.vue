@@ -1,81 +1,207 @@
 <template>
-  <v-card>
-    <v-card-title class="pt-10">
-            Users Account
-            <v-spacer></v-spacer>
-            <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                rounded
-                outlined
-                dense
-            ></v-text-field>
-            <v-select class="ml-10"
-                :items="options"
-                item-text="name"
-                item-value="id"
-                label="Status"
-                outlined
-                rounded
-                dense
-                hide-details
-                v-model="filter"
-                clearable
-                @change="searchStatus"
-            ></v-select>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      :search="search"
-    >
-       <template v-slot:item.status="{ item }">
-        <v-row id="btn-status">
-          <v-menu v-for="([text, rounded], index) in btns" :key="text" :rounded="rounded" offset-y>
-            <template v-slot:activator="{ attrs, on }">
-              <v-btn :color="colors[item.status]" class="white--text" v-bind="attrs" v-on="on" id="btn-wrapper">
-                {{ statuses[item.status].status }}
-                <v-icon>mdi-menu-down</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-for="(val, index) in statuses" :key="index" link @click="getItem(val, item)">
-                <v-list-item-title v-text="val.status"></v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-row>
-      </template>
-      <template v-slot:item.name="{ item }">
-        <div>
-         {{item.client.name}}
-        </div>
-      </template>
-      <template v-slot:item.total="{ item }">
-        <div>
-         ₱ {{item.total}}
-        </div>
-      </template>
-      <template v-slot:item.action="{ item }">
-        <div>
-          <v-icon @click="viewData(item)">mdi-eye</v-icon>
-          <!-- |
-          <v-icon @click="deleteOrder(item)">mdi-delete</v-icon> -->
-        </div>
-      </template>
-    </v-data-table>
-  </v-card>
+  <div>
+     <div class="mb-5">
+        <v-btn  elevation="6" @click="showPrintOrders()"><v-icon>mdi-printer</v-icon> &nbsp Print</v-btn>
+    </div>
+    <v-card>
+      <v-card-title class="pt-10">
+              Order list
+              <v-spacer></v-spacer>
+              <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                  rounded
+                  outlined
+                  dense
+              ></v-text-field>
+              <v-select class="ml-10"
+                  :items="options"
+                  item-text="name"
+                  item-value="id"
+                  label="Status"
+                  outlined
+                  rounded
+                  dense
+                  hide-details
+                  v-model="filter"
+                  clearable
+                  @change="searchStatus"
+              ></v-select>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="items"
+        :search="search"
+      >
+        <template v-slot:item.status="{ item }">
+          <v-row id="btn-status">
+            <v-menu v-for="([text, rounded], index) in btns" :key="text" :rounded="rounded" offset-y>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn :color="colors[item.status]" class="white--text" v-bind="attrs" v-on="on" id="btn-wrapper">
+                  {{ statuses[item.status].status }}
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-for="(val, index) in statuses" :key="index" link @click="getItem(val, item)">
+                  <v-list-item-title v-text="val.status"></v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-row>
+        </template>
+        <template v-slot:item.name="{ item }">
+          <div>
+          {{item.client.name}}
+          </div>
+        </template>
+        <template v-slot:item.total="{ item }">
+          <div>
+          ₱ {{item.total}}
+          </div>
+        </template>
+        <template v-slot:item.action="{ item }">
+          <div>
+            <v-icon @click="viewData(item)">mdi-eye</v-icon>
+            |
+            <v-icon @click="getOrderDetail(item)">mdi-printer</v-icon>
+          </div>
+        </template>
+      </v-data-table>
+    </v-card>
+
+      <div class="dialog">
+        <v-dialog class="pa-20"
+            v-model="dialogPrint"
+            persistent
+            max-width="700px"
+          >
+            <v-card id="modal-wrapper"  class="pa-5">
+                <div id="reciep-wrapper" class="reciep-wrapper-print" style="width:100%">
+                  <div class="reciep-order" id="reciep-order">
+                    <div class="header-reciept text-center" style="margin-bottom:20px">
+                      <h2 style="text-align:center">SONREY CAFE</h2>
+                      <p style="text-align:center">3 Katarungan, Mandaluyong, Kalakhang Maynila</p>
+                    </div>
+                    <div class="body-reciept">
+                      <h4 style="margin-bottom:10px">DATE: {{datenow}}</h4>
+                      <hr>
+                      <div class="list-cart">
+                        <table class="table" style="width:100%">
+                          <thead>
+                            <tr>
+                              <th style="text-align:left">Ref. Order</th>
+                              <th style="text-align:left">Customer</th>
+                              <th style="text-align:left">Status</th>
+                              <th style="text-align:left">Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr  v-for="item in items" :key="item.id" >
+                              <td style="text-align:left ;padding:5px">{{item.order_ref}}</td>
+                              <td style="text-align:left ;padding:5px">{{item.client.name}}</td>
+                              <td style="text-align:left ;padding:5px">{{item.status}}</td>
+                              <td style="text-align:left ;padding:5px">{{item.total}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <hr>
+                     
+                     <div class="total-wrapper d-flex" style="text-align:end;margin-top:10px">
+                          <h4 style="margin-left: auto;">Total: ₱ {{totals}}</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <v-btn dark @click="printReciept()" class="mt-5">
+                    Print Reciept
+                  </v-btn>
+
+                  <v-btn dark @click="dialogPrint = false" class="mt-1">
+                    Close
+                  </v-btn>
+              </div>
+            </v-card>
+          </v-dialog>
+      </div>
+      <div class="dialog">
+        <v-dialog class="pa-20"
+            v-model="dialogPrintDetail"
+            persistent
+            max-width="700px"
+          >
+            <v-card id="modal-wrapper"  class="pa-5">
+                <div id="reciep-wrapper" class="reciep-wrapper-print" style="width:100%">
+                  <div class="reciep-order" id="reciep-order" style="height: 588px;">
+                    <div class="header-reciept text-center" style="margin-bottom:20px">
+                      <h2 style="text-align:center">SONREY CAFE</h2>
+                      <p style="text-align:center">3 Katarungan, Mandaluyong, Kalakhang Maynila</p>
+                    </div>
+                    <div class="body-reciept">
+                      <h4 style="margin-bottom:5px">Order ref: {{orderRef}}</h4>
+                      <h4 style="margin-bottom:5px">Order status: {{getStatus(orderStat)}}</h4>
+                      <h4 style="margin-bottom:10px">DATE: {{datenow}}</h4>
+                      <hr>
+                      <div class="list-cart">
+                        <table class="table" style="width:100%">
+                          <thead>
+                            <tr>
+                              <th style="text-align:left">Product name</th>
+                              <th style="text-align:left">Quantity</th>
+                              <th style="text-align:left">Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr  v-for="detailsorder in detailOrder" :key="detailsorder.id" >
+                              <td style="text-align:left ;padding:5px">{{detailsorder.product.product_name}}</td>
+                              <td style="text-align:left ;padding:5px">{{detailsorder.quantity}}</td>
+                              <td style="text-align:left ;padding:5px">{{detailsorder.total}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <hr>
+                       <div class="total-wrapper d-flex" style="text-align:end;margin-top:10px">
+                          <h4 style="margin-left: auto;">Total: ₱ {{totals}}</h4>
+                      </div>
+                     
+                    </div>
+                     <!-- <div class="total-wrapper d-flex" style="text-align:end;margin-top:10px">
+                          <h4 style="margin-left: auto;">Total: ₱ 10000</h4>
+                      </div> -->
+                  </div>
+                  <v-btn dark @click="printReciept()" class="mt-5">
+                    Print Reciept
+                  </v-btn>
+
+                  <v-btn dark @click="dialogPrintDetail = false" class="mt-1">
+                    Close
+                  </v-btn>
+              </div>
+            </v-card>
+          </v-dialog>
+      </div>
+  </div>
 </template>
 <script>
+import moment from 'moment';
+
   export default {
     data () {
       return {
         search: '',
+        dialogPrint : false,
+        dialogPrintDetail : false,
+        orderRef : '',
+        orderStat: '',
+        totals : 0,
+        datenow: moment().format('DD MMM YYYY hh:mm:ss'),
+
         filter: '',
-         options: [
+        options: [
             {id:4,name:'All'},
             {id:0,name:'Pending'},
             {id:1,name:'Accepted'},
@@ -95,22 +221,38 @@
         ],
         items: [
         ],
+        detailOrder: [
+        ],
         colors: ['primary', 'success', 'error', '#555550'],
         statuses: [
-          { id: '0', status: 'Pending' },
-          { id: '1', status: 'Accept' },
-          { id: '2', status: 'Cancelled' },
-          { id: '3', status: 'Done' },
+          { id: 0, status: 'Pending' },
+          { id: 1, status: 'Accept' },
+          { id: 2, status: 'Cancelled' },
+          { id: 3, status: 'Done' },
         ],
-      
+
       }
     },
     mounted(){
       this.getOrder();
     },
     methods:{
+      getStatus(id){
+       var role = this.statuses.filter(x => x.id === id);
+      //  return role[0]['id'];
+        if(role.length){
+          return role[0]['status']; 
+        }
+      },
       gotO(link){
         this.$router.push({ name: link})
+      },
+      showPrintOrders(){
+       this.totals = 0;
+       this.dialogPrint = true;
+       this.items.forEach(element => {
+          this.totals = this.totals + element.total
+       });
       },
       getItem(item,val){
         var payload ={
@@ -122,6 +264,16 @@
          this.$awn.success('Order status update successfully')
         })
       },
+      getOrderDetail(item){
+        this.orderRef  = item.order_ref;
+        this.orderStat  = item.status;
+        this.totals  = item.total;
+        this.axios.get("/admin/cart_detail/"+`${item.id}`).then((response) => {
+          this.detailOrder = response.data.order_detail
+          this.dialogPrintDetail = true
+        })
+      },
+
       searchStatus(){
         if(this.filter==4 || this.filter==null){
           this.getOrder()
@@ -143,6 +295,28 @@
           this.axios.delete('/admin/order/'+item.id).then((response) => {
              this.getOrder()
           })
+      },
+       printReciept(){
+       // Get HTML to print from element
+     var divToPrint = document.querySelector('#reciep-order');
+
+      // Get all stylesheets HTML
+      let stylesHtml = '';
+      // for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+      //   stylesHtml += node.outerHTML;
+      // }
+      // console.log(stylesHtml,'stylesHtml')
+      // return;
+      
+      const WinPrint = window.open('');
+
+      WinPrint.document.write(stylesHtml);
+      WinPrint.document.write(divToPrint.outerHTML);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
       },
     }
   }
@@ -174,5 +348,9 @@
 #btn-status{
   display: flex;
     align-items: center;
+}
+.list-cart{
+  height: 348px;
+  overflow: auto !important;
 }
 </style>

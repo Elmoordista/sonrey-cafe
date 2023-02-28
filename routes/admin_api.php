@@ -6,6 +6,7 @@ use App\Http\Controllers\CartDetailController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -58,4 +59,5 @@ Route::resources([
     'order' => OrderController::class,
     'cart' => CartController::class,
     'cart_detail' => CartDetailController::class,
+    'feedback' => FeedbackController::class,
 ]);

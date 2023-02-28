@@ -15,7 +15,7 @@ export default {
       const messaging = getMessaging()
       onMessage(messaging, (payload) => {
         // alert('test');
-        this.initialize()
+        this.initialize(true)
         // this.saveCoachNotification(payload)
       })
     },

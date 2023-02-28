@@ -225,3 +225,8 @@ padding: 40px;
 #left-list .v-list{
   padding-top: 0 !important;
 }
+
+
+@media print {
+  p.bodyText {font-family:georgia, times, serif;}
+}

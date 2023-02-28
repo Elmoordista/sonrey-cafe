@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
@@ -46,11 +47,11 @@ Route::middleware('auth:client')->group(function () {
         Route::get('order/getorder', 'getuserorder');
     });
 
-
     Route::resources([
         'client' => ClientController::class,
         'product' => ProductController::class,
         'cart' => CartController::class,
         'order' => OrderController::class,
+        'feedback' => FeedbackController::class,
     ]);
 });

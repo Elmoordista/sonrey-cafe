@@ -60,6 +60,11 @@ export default {
         route: "user_account",
         icon: "mdi-account-circle",
       },
+      {
+        text: "User Feedback",
+        route: "feedback",
+        icon: "mdi-comment-account",
+      },
     ],
   }),
   computed: {

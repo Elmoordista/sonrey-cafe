@@ -16,7 +16,11 @@ class ProductController extends Controller
     public function index()
     {
         try {
-        return Product::all();
+            return Product::whereHas('category', function ($data) {
+                $data->where('status', 1);
+            })->get();
+
+          
         } catch (Exception $e) {
         return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -48,6 +52,7 @@ class ProductController extends Controller
             $request->validate([
                 'product_name' => 'required',
                 'price' => 'required',
+                'category_id' => 'required',
             ]);
 
             if(isset($request->id)){

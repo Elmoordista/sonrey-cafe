@@ -15,6 +15,7 @@ class Product extends Model
         'product_name',
         'category_id',
         'price',
+        'status',
     ];
     
     public function cart_detail()
@@ -24,5 +25,10 @@ class Product extends Model
     public function order_detail()
     {
         return $this->hasMany(Order_detail::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
