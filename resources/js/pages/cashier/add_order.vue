@@ -110,7 +110,7 @@
               Save order
             </v-btn>
         </div>
-         <v-dialog class="pa-20"
+         <v-dialog class="pa-20" v-if="payload.length"
             v-model="dialog"
             persistent
             max-width="300px"
@@ -119,7 +119,7 @@
                 <div class="text-center">
                  <div class="item-wrapper d-flex flex-column">
                     <div>
-                         <v-img v-if="payload.image "
+                         <v-img v-if="payload.image"
                           max-height="200"
                           max-width="250"
                           :src="payload.image "
@@ -163,7 +163,7 @@
                 </div>
             </v-card>
           </v-dialog>
-         <v-dialog class="pa-20"
+         <v-dialog class="pa-20" v-if="print_order.length"
             v-model="dialogPrint"
             persistent
             max-width="500px"
