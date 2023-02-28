@@ -47,6 +47,10 @@ Route::middleware('auth:client')->group(function () {
         Route::get('order/getorder', 'getuserorder');
     });
 
+    Route::controller(ClientController::class)->group(function () {
+        Route::get('client/info', 'info');
+    });
+
     Route::resources([
         'client' => ClientController::class,
         'product' => ProductController::class,

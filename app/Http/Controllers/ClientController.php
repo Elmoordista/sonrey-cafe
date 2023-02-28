@@ -61,6 +61,15 @@ class ClientController extends Controller
             }
     }
 
+    public function info()
+    {
+        try {
+            return Auth::user();
+            } catch (Exception $e) {
+                return response()->json(['message' => $e->getMessage()], 500);
+            }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
