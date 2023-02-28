@@ -71,7 +71,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <template v-if="save_Order == false">
+                    <template v-if="save_Order == false && cart_order.length">
                     <tr  v-for="cartdata in cart_order.cart_detail" :key="cartdata.id">
                       <th>{{cartdata.product.product_name}}</th>
                       <td >{{cartdata.quantity}}</td>
@@ -163,7 +163,7 @@
                 </div>
             </v-card>
           </v-dialog>
-         <!-- <v-dialog class="pa-20" v-if="print_order.length"
+         <v-dialog class="pa-20" v-if="print_order.length"
             v-model="dialogPrint"
             persistent
             max-width="500px"
@@ -212,7 +212,7 @@
                 </v-btn>
             </div>
             </v-card>
-          </v-dialog> -->
+          </v-dialog>
     </div>
 </template>
 <script>
