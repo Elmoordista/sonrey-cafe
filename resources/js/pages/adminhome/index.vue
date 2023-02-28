@@ -1,17 +1,18 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar
+    <v-app-bar id="header-app"
       app
       color="#FFCC6C"
       flat
     >
-      <v-container class="py-0 fill-height ma-0">
+      <v-container class="py-0 fill-height ma-0" >
         <v-img
             max-height="110"
             max-width="110"
             src="/adminlogo.png"
             class="ml-8"
           ></v-img>
+          <h3 class="ml-10" id="role-wrapper">{{roles[this.role - 1]}}</h3>
         <v-spacer></v-spacer>
         <!-- <div> -->
         <div v-if="role == 1">
@@ -59,6 +60,11 @@
           route: "employee_account",
         },
       ],
+      roles :[
+        'Admin',
+        'Cashier',
+        'Kitchen',
+      ]
     }),
     mounted(){
       this.role = localStorage.getItem('role');
@@ -96,5 +102,12 @@
 }
 #main_admin{
   padding: 130px 0px 0px !important;
+}
+#role-wrapper{
+    font-weight: 700;
+    font-family: auto;
+}
+#header-app{
+      border-bottom: solid 2px #000 !important;
 }
 </style>
