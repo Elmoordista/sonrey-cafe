@@ -51,7 +51,7 @@
           </v-col>
         </div>
         <div class="vl"></div>
-        <!-- <div id="reciep-wrapper">
+        <div id="reciep-wrapper">
           <div class="reciep-order">
             <div class="header-reciept text-center">
               <h2 >SONREY CAFE</h2>
@@ -108,8 +108,8 @@
            <v-btn dark @click="saveOrder()" class="mt-5" :disabled="save_Order">
               Save order
             </v-btn>
-        </div> -->
-         <v-dialog class="pa-20" v-if="payload.length"
+        </div>
+         <v-dialog class="pa-20" 
             v-model="dialog"
             persistent
             max-width="300px"
