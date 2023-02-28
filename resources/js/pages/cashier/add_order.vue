@@ -163,7 +163,7 @@
                 </div>
             </v-card>
           </v-dialog>
-         <v-dialog class="pa-20" v-if="print_order.length"
+         <!-- <v-dialog class="pa-20" v-if="print_order.length"
             v-model="dialogPrint"
             persistent
             max-width="500px"
@@ -203,7 +203,6 @@
                   </div>
                   
                 </div>
-           <!-- <v-btn dark @click="saveOrder()" class="mt-5"> -->
                 <v-btn dark @click="printReciept()" class="mt-5">
                   Print Reciept
                 </v-btn>
@@ -213,7 +212,7 @@
                 </v-btn>
             </div>
             </v-card>
-          </v-dialog>
+          </v-dialog> -->
     </div>
 </template>
 <script>
