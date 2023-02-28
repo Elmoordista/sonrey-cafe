@@ -162,7 +162,7 @@
                 </div>
             </v-card>
           </v-dialog>
-         <!-- <v-dialog class="pa-20" v-if="print_order.length"
+         <v-dialog class="pa-20"
             v-model="dialogPrint"
             persistent
             max-width="500px"
@@ -211,7 +211,7 @@
                 </v-btn>
             </div>
             </v-card>
-          </v-dialog> -->
+          </v-dialog>
     </div>
 </template>
 <script>
