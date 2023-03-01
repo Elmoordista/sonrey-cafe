@@ -85,6 +85,12 @@ export default {
   },
   mounted(){
     this.routes = this.$route.name;
+  },
+  created(){
+    var role = localStorage.getItem('role');
+    if (role != 3) {
+      return this.$router.push({ name: role == 1? 'total_sales' : 'add_order'});
+    }
   }
 };
 </script>

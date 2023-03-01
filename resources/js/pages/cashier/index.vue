@@ -95,6 +95,12 @@ export default {
   },
   mounted(){
     this.routes = this.$route.name;
+  },
+  created(){
+    var role = localStorage.getItem('role');
+    if (role != 2) {
+      return this.$router.push({ name: role == 1? 'total_sales' : 'orders'});
+    }
   }
 };
 </script>

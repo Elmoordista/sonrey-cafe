@@ -64,20 +64,23 @@
         'Admin',
         'Cashier',
         'Kitchen',
-      ]
+      ],
+      curentRoles : ''
     }),
     mounted(){
       this.role = localStorage.getItem('role');
-      if(this.role == 2){
-         this.$router.push({ name: 'add_order'})
-      }
-      else if(this.role == 3){
-        this.$router.push({ name: 'orders'})
-      }
-      else{
-        this.$router.push({ name: 'total_sales'})
-      }
-      // this.checkuser();
+      // this.curentRoles = this.roles[this.role - 1];
+
+      // if(this.role == 2){
+      //    this.$router.push({ name: 'add_order'})
+      // }
+      // else if(this.role == 3){
+      //   this.$router.push({ name: 'orders'})
+      // }
+      // else{
+      //   this.$router.push({ name: 'total_sales'})
+      // }
+      
     },
     methods:{
       goTO(link){
