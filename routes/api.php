@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminInfoController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FeedbackController;
@@ -50,6 +51,10 @@ Route::middleware('auth:client')->group(function () {
     Route::controller(ClientController::class)->group(function () {
         Route::get('client/info', 'info');
     });
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('product/getproducts', 'getProducts');
+        Route::post('product/searchprodapp', 'searchprodApp');
+    });
 
     Route::resources([
         'client' => ClientController::class,
@@ -57,5 +62,6 @@ Route::middleware('auth:client')->group(function () {
         'cart' => CartController::class,
         'order' => OrderController::class,
         'feedback' => FeedbackController::class,
+        'admininfo' => AdminInfoController::class,
     ]);
 });

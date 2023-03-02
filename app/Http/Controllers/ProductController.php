@@ -26,6 +26,27 @@ class ProductController extends Controller
         }
     }
 
+    public function getProducts()
+    {
+        try {
+            $allprodct = [];
+            $product = Product::whereHas('category', function ($data) {
+                $data->where('status', 1);
+            })->with('category')->get();
+
+            foreach($product as $key => $prod){
+                $allprodct[$prod['category']['category_name']][] = $prod;
+            }
+
+
+            return $allprodct;
+
+          
+        } catch (Exception $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -67,15 +88,23 @@ class ProductController extends Controller
     }
     public function searchproduct(Request $request)
     {
+        
         try {
            $sql = Product::query();
+
            if($request->name){
                 $sql->where('product_name','LIKE',"%".$request->name."%");
            }
            if($request->cat_id){
                 $sql->where('category_id',$request->cat_id);
            }
-           return $sql->get();
+
+            $sql->whereHas('category', function ($data) {
+                $data->where('status', 1);
+            });
+
+            return $sql->get();
+
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -144,6 +173,34 @@ class ProductController extends Controller
     public function deleteProduct($id)
     {
        return Product::where('id', $id)->delete();
+    }
+
+    public function searchprodApp(Request $request)
+    {
+        try {
+            $allprodct = [];
+            $sql = Product::query();
+
+            if($request->name){
+                $sql->where('product_name','LIKE',"%".$request->name."%");
+            }
+
+            $sql->whereHas('category', function ($data) {
+                $data->where('status', 1);
+            });
+
+            $data = $sql->with('category')->get();
+
+
+            foreach($data as $key => $prod){
+                $allprodct[$prod['category']['category_name']][] = $prod;
+            }
+
+            return $allprodct;
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     
