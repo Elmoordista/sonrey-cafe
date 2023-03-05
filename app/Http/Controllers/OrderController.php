@@ -30,8 +30,8 @@ class OrderController extends Controller
     public function getOrderList()
     {
         $now = Carbon::now()->format('Y-m-d');
-        $data = Order::where('status',1)->Orwhere('status',3)->with('order_detail')->get();
-        // $data = Order::where('status',1)->Orwhere('status',3)->whereDate('created_at', $now)->with('order_detail')->get();
+        // $data = Order::where('status',1)->Orwhere('status',3)->with('order_detail')->get();
+        $data = Order::where('status',1)->Orwhere('status',3)->whereDate('created_at', $now)->with('order_detail')->get();
         foreach($data as $key => $datas){
             $data[$key]['order_num'] = $key + 1;
         }
@@ -223,7 +223,8 @@ class OrderController extends Controller
     {
        $user = Auth::user();
 
-        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->get();
+        return Order::where('client_id', $user->id)->with('order_detail')->get();
+        // return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->get();
         
     }
     public function productreport()
