@@ -90,7 +90,7 @@ class CartDetailController extends Controller
         try {
             $cart = Cart::where('id', $request->cart_id)->first();
             $data = array(
-                'cart_total' =>$cart->cart_total - $request->total,    
+                'cart_total' => $cart->cart_total - $request->total,    
             );
             $cart = Cart::where('id',$cart->id)->update($data);
 

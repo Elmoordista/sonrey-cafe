@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Order::with('client')->get();
+        return Order::with('client')->orderBy('id','desc')->get();
     }
 
     public function getOrderList()
@@ -222,16 +222,14 @@ class OrderController extends Controller
     public function getuserorder()
     {
        $user = Auth::user();
-
-        return Order::where('client_id', $user->id)->with('order_detail')->get();
+       return Order::where('client_id', $user->id)->with('order_detail')->orderBy('id','desc')->get();
         // return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->get();
         
     }
     public function productreport()
     {
        $user = Auth::user();
-
-        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->get();
+       return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->get();
         
     }
 
