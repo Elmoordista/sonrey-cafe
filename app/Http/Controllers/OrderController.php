@@ -222,14 +222,14 @@ class OrderController extends Controller
     {
        $user = Auth::user();
 
-        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->first();
+        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->get();
         
     }
     public function productreport()
     {
        $user = Auth::user();
 
-        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->first();
+        return Order::where('client_id', $user->id)->where('status', 0)->with('order_detail')->get();
         
     }
 
