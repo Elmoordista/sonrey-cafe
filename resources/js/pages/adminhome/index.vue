@@ -88,6 +88,14 @@
                     <input type="file" multiple ref="file_input" class="d-none" accept="image/*" @change="getFiles">
 
                     <v-text-field
+                      label="Gcash name"
+                      filled
+                      hide-details
+                      v-model="payload.gcash_name"
+                      clearable
+                      background-color="white"
+                    ></v-text-field>
+                    <v-text-field
                       label="Gcash number"
                       filled
                       hide-details
@@ -153,7 +161,8 @@
       ],
       payload :{
         logo:'/adminlogo.png',
-        gcash_number : '',
+        gcash_name: '',
+        contact_number : '',
         contact_number : '',
       },
       logo : '',

@@ -42,6 +42,7 @@ class AdminInfoController extends Controller
         
 
         $request->validate([
+            'gcash_name' => 'required',
             'gcash_number' => 'required|numeric|digits:11',
             'contact_number' => 'required|numeric|digits:11',
         ]);

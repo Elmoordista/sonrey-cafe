@@ -71,7 +71,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <template v-if="save_Order == false && cart_order.length">
+                    <template v-if="save_Order == false">
                     <tr  v-for="cartdata in cart_order.cart_detail" :key="cartdata.id">
                       <th>{{cartdata.product.product_name}}</th>
                       <td >{{cartdata.quantity}}</td>

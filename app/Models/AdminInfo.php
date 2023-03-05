@@ -11,6 +11,7 @@ class AdminInfo extends Model
     
     protected $fillable = [
         'logo',
+        'gcash_name',
         'gcash_number',
         'contact_number',
     ];

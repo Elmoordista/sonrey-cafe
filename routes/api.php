@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminInfoController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartDetailController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\OrderController;
@@ -32,6 +33,7 @@ Route::controller(ClientController::class)->group(function () {
 
 Route::controller(OrderController::class)->group(function () {
     Route::post('order/sendNotification', 'sendNotification');
+    Route::post('order/update_status', 'update_status');
 });
 
 Route::middleware('auth:client')->group(function () {
@@ -56,6 +58,11 @@ Route::middleware('auth:client')->group(function () {
         Route::post('product/searchprodapp', 'searchprodApp');
     });
 
+    Route::controller(CartDetailController::class)->group(function () {
+        Route::post('cart_detail/deleteproduct', 'deleteProduct');
+        Route::post('cart_detail/updatecart', 'updateCart');
+    });
+
     Route::resources([
         'client' => ClientController::class,
         'product' => ProductController::class,
@@ -63,5 +70,6 @@ Route::middleware('auth:client')->group(function () {
         'order' => OrderController::class,
         'feedback' => FeedbackController::class,
         'admininfo' => AdminInfoController::class,
+        'cart_detail' => CartDetailController::class,
     ]);
 });
