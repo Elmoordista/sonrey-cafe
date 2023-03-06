@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\PasswordReset;
 use App\Models\Client;
 use App\Models\Fcmtoken;
-use App\Models\PasswordReset as ModelsPasswordReset;
+use App\Models\PasswordReset as ResetPassword;
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -261,12 +261,13 @@ class ClientController extends Controller
         
         Mail::to($request->email)->send(new PasswordReset($token, $request->email));
 
-        return response()->json(['message' => 'Password Reset Token Succesufly Sent!']);
+        return response()->json(['message' => 'Password Reset Code Succesufly Sent!']);
     }
 
     public static function generateCode(){
+
         $rand = Str::random(8);
-        if(ModelsPasswordReset::where('code',$rand)->exists()){
+        if(ResetPassword::where('token',$rand)->exists()){
             self::generateCode();
         }
         else{
