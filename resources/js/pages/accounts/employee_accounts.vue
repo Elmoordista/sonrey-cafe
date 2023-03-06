@@ -159,10 +159,11 @@
       deleteAccount(item){
           let notifier = this.$awn;
           let onOk = () => {this.deleteConfirm(item)};
+          let onCancel = () => {};
           notifier.confirm(
             'Are you you want to delete this Account?',
             onOk,
-            false,
+            onCancel,
             {
               labels: {
                 confirm: 'Delete confirmation'
