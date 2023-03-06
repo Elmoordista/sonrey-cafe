@@ -22,9 +22,9 @@
         </template>
         <template v-slot:item.action="{ item }">
             <div>
-            <v-icon @click="editUser(item)">mdi-pencil</v-icon>
+            <v-icon @click="editAnnouncement(item)">mdi-pencil</v-icon>
             |
-            <v-icon @click="deleteUser(item)">mdi-delete</v-icon>
+            <v-icon @click="deleteAnnouncement(item)">mdi-delete</v-icon>
             </div>
         </template>
         </v-data-table>
@@ -128,7 +128,40 @@
     },
     methods:{
         getImage(){
-        this.$refs.file_input.click()
+            this.$refs.file_input.click()
+        },
+        editAnnouncement(item){
+            this.payload = Object.assign(this.payload, item)
+            this.drawer = true;
+        },
+        deleteAnnouncement(item){
+            let notifier = this.$awn;
+            let onOk = () => {this.deleteConfirm(item)};
+            notifier.confirm(
+                'Are you you want to delete this announcement?',
+                onOk,
+                false,
+                {
+                labels: {
+                    confirm: 'Delete confirmation'
+                }
+                }
+          )
+        },
+        deleteConfirm(item){
+            let thiss = this;
+            this.$awn.asyncBlock(
+            thiss.axios.delete(`/admin/announcement/${item.id}`)
+            .then((response) => {
+                thiss.getDatas()
+                thiss.reset()
+                thiss.drawer = false;
+                thiss.$awn.success('Deleted successfully')
+                })
+            .catch((error) => {
+            }),
+            false,
+            )            
         },
         check(bool){
             if(bool == false){

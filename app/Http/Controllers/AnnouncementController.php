@@ -17,6 +17,14 @@ class AnnouncementController extends Controller
                 return response()->json(['message' => $e->getMessage()], 500);
             }
     }
+    public function destroy($id)
+    {
+        try {
+            return Announcement::where('id',$id)->delete();
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
     public function store(Request $request)
     {
         // try {
