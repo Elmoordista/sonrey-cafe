@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordReset;
 use App\Models\Client;
 use App\Models\Fcmtoken;
+use App\Models\PasswordReset as ModelsPasswordReset;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
 {
@@ -178,6 +183,8 @@ class ClientController extends Controller
         }
     }
 
+
+
     /**
      * Display the specified resource.
      *
@@ -230,4 +237,62 @@ class ClientController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+    public function porgot_pass(Request $request)
+    {
+
+        $this->validate($request, [
+            'email' => 'required | email'
+        ]);
+
+        $isCoachNotExist = Client::where('email', $request->email)->doesntExist();
+
+        if ($isCoachNotExist) {
+            return response()->json(['message' => 'Email not exists'], 500);
+        }
+
+        $token = $this->generateCode();
+
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token
+        ]);
+
+        
+        Mail::to($request->email)->send(new PasswordReset($token, $request->email));
+
+        return response()->json(['message' => 'Password Reset Token Succesufly Sent!']);
+    }
+
+    public static function generateCode(){
+        $rand = Str::random(8);
+        if(ModelsPasswordReset::where('code',$rand)->exists()){
+            self::generateCode();
+        }
+        else{
+            return $rand;
+        }
+    }
+    
+    public function resetPassword(Request $request)
+    {
+        $this->validate($request, [
+            'new_password' => 'required',
+            'code'        => 'required'
+        ]);
+
+        $IfExist = DB::table('password_resets')
+            ->where('token', $request->code)
+            ->first();
+
+        if ($IfExist) {
+            Client::where('email', $IfExist->email)->update([
+                'password' => bcrypt($request->new_password)
+            ]);
+            return response()->json(['message' => 'Password Succesfuly Reset']);
+        }
+
+        return response()->json(['message' => 'Error', 500]);
+    }
+
 }

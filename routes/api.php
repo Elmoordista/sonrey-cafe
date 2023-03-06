@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(ClientController::class)->group(function () {
     Route::post('client/login', 'login');
+    Route::post('client/porgot_pass', 'porgot_pass');
+    Route::post('client/resetpassword', 'resetPassword');
     Route::post('client/register', 'register');
 });
 
@@ -53,6 +55,7 @@ Route::middleware('auth:client')->group(function () {
     Route::controller(ClientController::class)->group(function () {
         Route::get('client/info', 'info');
     });
+
     Route::controller(ProductController::class)->group(function () {
         Route::get('product/getproducts', 'getProducts');
         Route::post('product/searchprodapp', 'searchprodApp');
