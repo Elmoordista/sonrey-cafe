@@ -11,7 +11,7 @@
                   :class="link.route == routes ? 'active-btn':''"
                 >
                  <v-list-item-content>
-                    <v-list-item-title class="d-flex">
+                    <v-list-item-title class="d-flex" @click="routes = link.route">
                     <v-icon size="20">{{ link.icon }}</v-icon>
                       <p class="mb-0 ml-5">
                         {{ link.text }}
@@ -55,10 +55,11 @@ export default {
         route: "category",
         icon : 'mdi-format-list-bulleted'
       },
-      // {
-      //   text: "Roles",
-      //   route: "roles",
-      // },
+      {
+        icon : 'mdi-bullhorn',
+        text: "Announcement",
+        route: "announcement",
+      },
     ],
   }),
   computed: {

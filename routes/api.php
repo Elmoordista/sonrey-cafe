@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdminInfoController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartDetailController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -74,5 +76,6 @@ Route::middleware('auth:client')->group(function () {
         'feedback' => FeedbackController::class,
         'admininfo' => AdminInfoController::class,
         'cart_detail' => CartDetailController::class,
+        'announcement' => AnnouncementController::class,
     ]);
 });

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminInfoController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartDetailController;
 use App\Http\Controllers\CategoryController;
@@ -62,4 +63,5 @@ Route::resources([
     'cart_detail' => CartDetailController::class,
     'feedback' => FeedbackController::class,
     'admininfo' => AdminInfoController::class,
+    'announcement' => AnnouncementController::class,
 ]);
