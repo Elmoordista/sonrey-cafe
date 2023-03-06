@@ -137,10 +137,11 @@
         deleteAnnouncement(item){
             let notifier = this.$awn;
             let onOk = () => {this.deleteConfirm(item)};
+            let onCancel = () => {};
             notifier.confirm(
                 'Are you you want to delete this announcement?',
                 onOk,
-                false,
+                onCancel,
                 {
                 labels: {
                     confirm: 'Delete confirmation'
