@@ -5,8 +5,6 @@ import roles from '../pages/settings/announcement'
 // import edit from '@/pages/Accounts/Edit'
 // import show from '@/pages/Accounts/Show'
 
-let uri = 'purchase'
-
 export default [
     {
     path: `/settings`,
@@ -18,6 +16,7 @@ export default [
         name: `category`,
         component: category
       },
+
       {
         path: `/settings/announcement`,
         name: `announcement`,
