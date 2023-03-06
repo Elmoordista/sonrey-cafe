@@ -5,7 +5,7 @@
             <v-btn color="#ffcc6c" fab @click="drawer = true"><v-icon>mdi-plus</v-icon></v-btn>
         </div>
         <hr>
-        <v-data-table class="bg-transparent"
+        <v-data-table class="elevation-10"
             :headers="headers"
             :items="items"
             :items-per-page="10"
