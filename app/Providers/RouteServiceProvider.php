@@ -48,6 +48,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/admin_api.php'));
                 
             Route::prefix('user')
+                ->middleware(['api', 'cors'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/user.php'));
 
