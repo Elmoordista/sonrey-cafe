@@ -21,20 +21,20 @@ class Cors
         //     ->header('Access-Control-Allow-Methods', "PUT,POST,DELETE,GET,OPTIONS")
         //     ->header('Access-Control-Allow-Headers', "Accept,Authorization,Content-Type");
 
-        header("Access-Control-Allow-Origin: *");
-        //ALLOW OPTIONS METHOD
-        $headers = [
-            'Access-Control-Allow-Methods' => 'POST,GET,OPTIONS,PUT,DELETE',
-            'Access-Control-Allow-Headers' => 'Content-Type, X-Auth-Token, Origin, Authorization',
-        ];
-        if ($request->getMethod() == "OPTIONS"){
-            //The client-side application can set only headers allowed in Access-Control-Allow-Headers
-            return response()->json('OK',200,$headers);
+          //Intercepts OPTIONS requests
+        if($request->isMethod('OPTIONS')) {
+            $response = response('', 200);
+        } else {
+            // Pass the request to the next middleware
+            $response = $next($request);
         }
-        $response = $next($request);
-        foreach ($headers as $key => $value) {
-            $response->header($key, $value);
-        }
+
+        // Adds headers to the response
+        $response->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
+        $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
+        $response->header('Access-Control-Allow-Origin', '*');
+
+        // Sends it
         return $response;
     }
 }
