@@ -153,10 +153,9 @@ class ClientController extends Controller
             }
 
             if(isset($request->id)){
-                
+
                 $request->validate([
                     'email' => 'email|required|unique:clients,email,'.$request->id,
-                    'birth_date' => 'required',
                     'number' => 'required|numeric|digits:11',
                     'name' => 'required',
                     'username' => 'required|unique:clients,username,'.$request->id,
@@ -171,7 +170,6 @@ class ClientController extends Controller
 
                 $request->validate([
                     'email' => 'email|required|unique:clients,email,',
-                    'birth_date' => 'required',
                     'number' => 'required|numeric|digits:11',
                     'name' => 'required',
                     'username' => 'required|unique:clients,username,',
