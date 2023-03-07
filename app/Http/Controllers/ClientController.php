@@ -147,24 +147,44 @@ class ClientController extends Controller
 
     public function register(Request $request)
     {
-        try {
+        // try {
             if (preg_match('#^data:image.*?base64,#', $request->image)) {
                  $request['image'] = $this->uploadImage($request);
             }
 
             if(isset($request->id)){
+                
+                $request->validate([
+                    'email' => 'email|required|unique:clients,email,'.$request->id,
+                    'birth_date' => 'required',
+                    'number' => 'required|numeric|digits:11',
+                    'name' => 'required',
+                    'username' => 'required|unique:clients,username,'.$request->id,
+                ]);
+
                 if($request['password']){
                     $request['password'] = bcrypt($request['password']);
                 }
                 Client::where('id', $request->id)->update($request->toArray());
             }
             else{
+
+                $request->validate([
+                    'email' => 'email|required|unique:clients,email,',
+                    'birth_date' => 'required',
+                    'number' => 'required|numeric|digits:11',
+                    'name' => 'required',
+                    'username' => 'required|unique:clients,username,',
+                    'password' => 'required',
+                    'confirmpassword' => 'required',
+                ]);
+
                 $request['password'] = bcrypt($request['password']);
                 return Client::create($request->toArray());
             }
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
+        // } catch (Exception $e) {
+        //     return response()->json(['message' => $e->getMessage()], 500);
+        // }
     }
 
     public function uploadImage($request){
