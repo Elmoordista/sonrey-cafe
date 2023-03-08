@@ -50,8 +50,8 @@
                   >
                   </v-img>
                   <div class="d-flex product-info mt-3">
-                    <h5>{{data.product_name}}</h5>
-                    <h5>₱ {{data.price}}</h5>
+                    <h5 class="text-center">{{truncateFilename(data.product_name)}}</h5>
+                    <h5 class="text-center">₱ {{data.price}}</h5>
                   </div>
                 </div>
                   <v-btn dark @click="editItem(data)">
@@ -263,6 +263,15 @@ export default {
        this.items = response.data;
       })
     },
+    truncateFilename(fileName){
+          var file_name = fileName;
+          var arr_filename = file_name.split('.');
+          var file_ex = arr_filename[ arr_filename.length-1  ];
+          if ( file_name.length > 20 ) {
+            file_name = file_name.substr(0,15) + '...';
+          }
+          return file_name;
+      },
     editItem(data){
       this.dialog = true;
       this.payload = Object.assign(this.payload, data)
@@ -343,6 +352,12 @@ export default {
     overflow: auto;
     max-height: 700px;
   }
+
+  #v-image{
+    border-radius: 10px;
+    height: 140px;
+  }
+
 
 </style>
 
