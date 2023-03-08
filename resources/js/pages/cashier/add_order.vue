@@ -40,8 +40,10 @@
                     </v-chip>
                   </v-img>
                   <div class="d-flex product-info mt-3">
-                    <h5>{{data.product_name}}</h5>
-                    <h5>₱ {{data.price}}</h5>
+                    <!-- <h5>{{data.product_name}}</h5>
+                    <h5>₱ {{data.price}}</h5> -->
+                    <h5 class="text-center">{{truncateFilename(data.product_name)}}</h5>
+                    <h5 class="text-center">₱ {{data.price}}</h5>
                   </div>
                    <v-btn :disabled="data.status ? false : true " :id="!data.status ? 'change-bg' : ''" dark @click="orderItem(data)"  class="mt-2">
                     order
@@ -117,7 +119,7 @@
             <v-card id="modal-wrapper" class="pa-5">
                 <div class="text-center">
                  <div class="item-wrapper d-flex flex-column">
-                    <div>
+                    <div id="order_prod">
                          <v-img v-if="payload.image"
                           max-height="200"
                           max-width="250"
@@ -136,8 +138,8 @@
                         </v-img>
                     </div>
                     <div class="d-flex product-info mt-3">
-                      <h4>{{payload.product_name}}</h4>
-                      <h4>₱ {{payload.price}}</h4>
+                      <h4 class="text-center">{{truncateFilename(payload.product_name)}}</h4>
+                      <h4 class="text-center">₱ {{payload.price}}</h4>
                     </div>
                     <div class="d-flex quanity">
                         <h4>Quantity:</h4>
@@ -297,8 +299,17 @@ export default {
        this.items = response.data;
       })
     },
+    truncateFilename(fileName){
+        var file_name = fileName;
+        var arr_filename = file_name.split('.');
+        var file_ex = arr_filename[ arr_filename.length-1  ];
+        if ( file_name.length > 10 ) {
+          file_name = file_name.substr(0,10) + '...';
+        }
+        return file_name;
+    },
     cancelOrder(){
-      this.payload = [];
+      // this.payload = [];
       this.dialog = false
     },
     placeOrder(){
@@ -450,6 +461,18 @@ export default {
 
   #change-bg{
     background-color: gray !important;
+  }
+
+
+  #v-image{
+    border-radius: 10px;
+    height: 145px;
+  }
+
+  #order_prod{
+    border: solid 1px #000;
+    border-radius: 11px;
+    background-color: #fff;
   }
 
 </style>
