@@ -85,7 +85,7 @@
         </v-card>
         <div class="dialog">
         <v-dialog class="pa-20"
-            v-model="dialogPrintDetail" v-if="detailOrder.length"
+            v-model="dialogPrintDetail"
             persistent
             max-width="700px"
           >

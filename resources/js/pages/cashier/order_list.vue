@@ -103,7 +103,7 @@
                             <tr  v-for="item in items" :key="item.id" >
                               <td style="text-align:left ;padding:5px">{{item.order_ref}}</td>
                               <td style="text-align:left ;padding:5px">{{item.client.name}}</td>
-                              <td style="text-align:left ;padding:5px">{{item.status}}</td>
+                              <td style="text-align:left ;padding:5px">{{getStatus(item.status)}}</td>
                               <td style="text-align:left ;padding:5px">{{item.total}}</td>
                             </tr>
                           </tbody>

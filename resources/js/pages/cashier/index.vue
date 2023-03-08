@@ -9,7 +9,7 @@
                   @click="gotO(link.route)"
                   active-color="primary"
                   :value="link.route"
-                  :class="link.route == routes ? 'active-btn':''"
+                  :class="link.route == routes? 'active-btn':''"
                 >
                   <v-list-item-content>
                     <v-list-item-title class="d-flex">
