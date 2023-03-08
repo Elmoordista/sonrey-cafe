@@ -475,5 +475,9 @@ export default {
     background-color: #fff;
   }
 
+  #v-image .v-image__image{
+    background-size: contain;
+  }
+
 </style>
 
