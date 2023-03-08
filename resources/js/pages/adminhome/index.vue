@@ -292,4 +292,7 @@
     border-radius: 50px;
     height: 150px;
 }
+.fill-height{
+      max-width: 1850px !important;
+}
 </style>

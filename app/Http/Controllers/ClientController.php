@@ -313,5 +313,17 @@ class ClientController extends Controller
 
         return response()->json(['message' => 'Error', 500]);
     }
+    
+    public function deleteall(Request $request)
+    {
+        try {
+            
+            foreach($request->toArray() as $data){
+               Client::where('id', $data['id'])->delete();
+            }
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
 }

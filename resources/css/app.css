@@ -9,8 +9,8 @@
 #left-list-wrapper{
   padding: 0px;
   gap: 10px;
-  max-width: 40%;
-  max-height: 440px;
+  /* max-width: 40%;
+  max-height: 440px; */
 }
 #left-list-wrapper2{
   padding: 0px 22px !important;
@@ -88,8 +88,8 @@
 #left-list-wrapper{
   padding: 0;
   gap: 10px;
-  max-width: 40%;
-  max-height: 440px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 #left-list .v-sheet {
   height: 100%;

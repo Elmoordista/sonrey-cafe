@@ -52,6 +52,10 @@ Route::controller(OrderController::class)->group(function () {
     Route::get('order/orders', 'getOrderList');
 });
 
+Route::controller(ClientController::class)->group(function () {
+    Route::post('client/deleteall', 'deleteall');
+});
+
 
 Route::resources([
     'client' => ClientController::class,

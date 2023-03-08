@@ -29,7 +29,7 @@
       :search="search"
     >
       <template v-slot:item.rate="{ item }">
-        <div>
+        <div class="_rate">
             <v-chip :color="colors[item.rate - 1]">
                 {{rates[item.rate - 1]}}
             </v-chip>
@@ -182,9 +182,9 @@
 .feedback-wrapper:last-of-type{
   margin-bottom: 10px;
 }
-.feedback-wrapper p{
+/* .feedback-wrapper p{
     flex: 1;
-}
+} */
 
 .feedback-wrapper *{
     font-size: 17px;
@@ -199,5 +199,8 @@
 #btn-feedback{
     width: 82px;
     margin-left: auto;
+}
+._rate{
+      width: fit-content;
 }
 </style>
