@@ -2,13 +2,14 @@
     height: 100%;
     background-color: #FFF5BF;
 }
-#left-side-bar .row{
-    height: 100%;
+/* #left-side-bar .row{
+    height: fit-content;
     margin: 0;
-}
+} */
 #left-list-wrapper{
   padding: 0px;
   gap: 10px;
+  height: fit-content;
   /* max-width: 40%;
   max-height: 440px; */
 }
@@ -81,10 +82,10 @@
   height: 100%;
   background-color: #FFF5BF;
 }
-#left-side-bar .row{
+/* #left-side-bar .row{
   height: 100%;
   margin: 0;
-}
+} */
 #left-list-wrapper{
   padding: 0;
   gap: 10px;

@@ -334,5 +334,15 @@ export default {
     background: transparent;
     box-shadow: none;
   }
+  #left-list-wrapper .item-wrapper{
+    height: fit-content !important;
+  }
+
+  #left-list-wrapper{
+    margin-top: 12px;
+    overflow: auto;
+    max-height: 700px;
+  }
+
 </style>
 
