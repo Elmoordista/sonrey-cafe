@@ -355,7 +355,7 @@ export default {
 
   #v-image{
     border-radius: 10px;
-    height: 140px;
+    height: 145px;
   }
 
 
