@@ -13,7 +13,7 @@
       </v-icon>
     </v-btn> -->
     <v-card-title>
-      User Feedback
+      User feedback for application
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -111,6 +111,7 @@
         headers: [
           { text: 'Name', value: 'client.name' },
           { text: 'App comment', value: 'about_app' },
+          { text: 'Problem encounter', value: 'prob_encounter' },
           { text: 'Suggestion', value: 'suggestion' },
           { text: 'Rate', value: 'rate' },
           { text: 'Date', value: 'date' },

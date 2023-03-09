@@ -161,6 +161,10 @@ import carousel from 'vue-owl-carousel'
     mounted(){
         this.activateNotification();
         this.initialize(false)
+
+        setInterval(function() {
+            this.initialize(false)
+        }, 60000);
     },
     methods:{
         initialize(bool){
