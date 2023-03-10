@@ -41,7 +41,35 @@
             v-model="payload.email"
             background-color="white"
           ></v-text-field>
-           <h4 class="mt-5">Birthdate:</h4>
+          <h4 class="mt-5">Password:</h4>
+          <v-text-field
+          class="text-center "
+            filled
+            solo
+            hide-details
+            placeholder="password"
+            background-color="white"
+            
+            :type="!showpassword1 ? 'password' : 'text'"
+            v-model="payload.password"
+            @click:append="showpassword1=!showpassword1"
+            :append-icon="!showpassword1? 'mdi-eye' : 'mdi-eye-off' "
+          ></v-text-field>
+           <h4 class="mt-5">Confirm Password:</h4>
+          <v-text-field
+            class="text-center "
+            filled
+            solo
+            hide-details
+            placeholder="confirmpassword"
+            background-color="white"
+            
+            :type="!showpassword2 ? 'password' : 'text'"
+            @click:append="showpassword2=!showpassword2"
+            :append-icon="!showpassword2 ? 'mdi-eye' : 'mdi-eye-off' "
+            v-model="payload.confirmpassword"
+          ></v-text-field>
+           <!-- <h4 class="mt-5">Birthdate:</h4>
               <v-menu
               v-model="menu"
               :close-on-content-click="true"
@@ -66,19 +94,7 @@
               <v-date-picker
                 v-model="payload.birth_date"
               ></v-date-picker>
-            </v-menu>
-           <h4 class="mt-5">Contact Number:</h4>
-          <v-text-field
-          class="text-center "
-            filled
-            solo
-            hide-details
-            placeholder="Contact Number"
-            background-color="white"
-            clearable
-            append-icon="mdi-phone"
-            v-model="payload.number"
-          ></v-text-field>
+            </v-menu> -->
           </v-col>
          <v-col lg="6" md="6" sm="12">
           <h4 class="mt-5">Name: </h4>
@@ -113,33 +129,17 @@
             clearable
             v-model="payload.username"
           ></v-text-field>
-           <h4 class="mt-5">Password:</h4>
+          <h4 class="mt-5">Contact Number:</h4>
           <v-text-field
           class="text-center "
             filled
             solo
             hide-details
-            placeholder="password"
+            placeholder="Contact Number"
             background-color="white"
-            
-            :type="!showpassword1 ? 'password' : 'text'"
-            v-model="payload.password"
-            @click:append="showpassword1=!showpassword1"
-            :append-icon="!showpassword1? 'mdi-eye' : 'mdi-eye-off' "
-          ></v-text-field>
-           <h4 class="mt-5">Confirm Password:</h4>
-          <v-text-field
-            class="text-center "
-            filled
-            solo
-            hide-details
-            placeholder="confirmpassword"
-            background-color="white"
-            
-            :type="!showpassword2 ? 'password' : 'text'"
-            @click:append="showpassword2=!showpassword2"
-            :append-icon="!showpassword2 ? 'mdi-eye' : 'mdi-eye-off' "
-            v-model="payload.confirmpassword"
+            clearable
+            append-icon="mdi-phone"
+            v-model="payload.number"
           ></v-text-field>
           </v-col>
         </v-row>

@@ -62,7 +62,7 @@
           { text: 'Image', value: 'image'  },
           { text: 'Name', value: 'name' },
           { text: 'Email', value: 'email' },
-          { text: 'Birth date', value: 'birth_date' },
+          // { text: 'Birth date', value: 'birth_date' },
           { text: 'Number', value: 'number' },
           { text: 'Username', value: 'username' },
           { text: 'Action', value: 'action' },
