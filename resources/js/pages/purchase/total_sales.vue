@@ -161,7 +161,7 @@
             
         </v-card>
         <v-card class="pa-5" >
-          <v-card-title class="pa-0" id="report-graphs">Graph Total Sales by <strong> &nbsp;  {{checkType()}} &nbsp; ({{getFilter()}})</strong></v-card-title>
+          <v-card-title class="pa-0" id="report-graphs">Graph Total Sales by <strong> &nbsp;  {{checkType()}} &nbsp; ({{getFilter()}})</strong> <h4 class="mb-0 ml-auto">Totals : ₱ {{ report_total }}</h4></v-card-title>
           <hr >
           <linechart :chartData="totalSales"></linechart>
         </v-card>
@@ -243,6 +243,7 @@ export default {
       minimum_range: moment(this.range_start).add('d',1).format('YYYY-MM-DD'),
 
       search: '',
+      report_total: 0,
       items:[],
       headers: [
         { text: 'Time of order', align: 'center',value: 'order_time' },
@@ -379,6 +380,7 @@ export default {
     },
     checkReport(item) {
         this.axios.post('/admin/order/orderreport/'+item.request_view,item).then((response) => {
+          console.log(response,'response')
             if(response.data.total.length == 0){
                 this.totalSales['labels'] = []
                 this.totalSales['datasets'][0]['data'] = []
@@ -394,6 +396,7 @@ export default {
             this.mostorder['datasets'][0]['data'] = response.data.top_product_order.data;
             this.mostorder['datasets'][0]['backgroundColor'] = response.data.top_product_order.backgroundColor;
             this.most_order_food =  response.data.most_order == null ? false : response.data.most_order;
+            this.report_total =  response.data.total_order;
             
         })
     },

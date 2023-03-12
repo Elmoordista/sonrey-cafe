@@ -241,6 +241,7 @@ class OrderController extends Controller
         // })->get();
 
         $orders = [];
+        $totals = 0;
         $type = $date;
         if($date == 'week' || $date=='range') {
             $label_request = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
@@ -253,11 +254,19 @@ class OrderController extends Controller
 
             foreach($week_dates as $key => $dates) {
                     $sum = Order::whereDate('created_at', $dates)->where('status',3)->sum('total');
-                    $orders['label'][] = $type == 'week' ? $label_request[$key] : $dates;
+                    if($type == 'week'){
+                        // $orders['label'][] = $type == 'week' ? $label_request[$key] : $dates ;
+                        $orders['label'][] = $label_request[$key] . ' ('.((int)$sum ? (int)$sum : 0).')';
+                    }
+                    else{
+                        $orders['label'][] =  $dates . ' ('.((int)$sum ? (int)$sum : 0).')';
+
+                    }
                     $orders['data'][] = (int)$sum ? (int) $sum : 0;
+                    $totals = $totals + (int) $sum ;
             }
 
-            return response()->json(["total" =>  $orders, "most_order" => $this->mostOrderedFood(), "top_product_order" => $this->mostOrderedFoods()]);
+            return response()->json(["total" =>  $orders, "most_order" => $this->mostOrderedFood(), "top_product_order" => $this->mostOrderedFoods(),"total_order" => $totals]);
 
         }
         else if($date == 'year') {
@@ -275,12 +284,11 @@ class OrderController extends Controller
             
             foreach ($dates as $key => $date) {
                 $sum = Order::whereBetween('created_at',$date)->where('status',3)->sum('total');
-                $orders['label'][] = $label_month[$key];
+                $orders['label'][] = $label_month[$key] . ' ('.((int)$sum ? (int)$sum : 0).')';
                 $orders['data'][] = (int)$sum ? (int) $sum : 0;
-              
+                $totals = $totals + (int) $sum ;
             }
-            return response()->json(["total" =>  $orders, "most_order" => $this->mostOrderedFood(), "top_product_order" => $this->mostOrderedFoods()]);
-
+            return response()->json(["total" =>  $orders, "most_order" => $this->mostOrderedFood(), "top_product_order" => $this->mostOrderedFoods(), "total_order" => $totals]);
         }
         else {
             return "sad";
