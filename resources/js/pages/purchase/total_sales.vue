@@ -161,7 +161,7 @@
             
         </v-card>
         <v-card class="pa-5" >
-          <v-card-title class="pa-0" id="report-graphs">Graph Total Sales by <strong> &nbsp;  {{checkType()}} &nbsp; ({{showMonth=='week' ? start_weeks +' to '+ end_weeks : current_year}})</strong></v-card-title>
+          <v-card-title class="pa-0" id="report-graphs">Graph Total Sales by <strong> &nbsp;  {{checkType()}} &nbsp; ({{getFilter()}})</strong></v-card-title>
           <hr >
           <linechart :chartData="totalSales"></linechart>
         </v-card>
@@ -320,6 +320,17 @@ export default {
         return 'Daily';
        }
     },
+    getFilter() {
+       if(this.showMonth=='year'){
+        return this.current_year
+       }
+       else if(this.showMonth == 'week'){
+        return this.start_weeks +' to '+ this.end_weeks
+       }
+       else{
+        return this.range_start +' to '+ this.range_end
+       }
+    },
     // printGraph() {
    
     //   var windowContent = '<!DOCTYPE html>';
@@ -355,10 +366,13 @@ export default {
       WinPrint.document.write(divToPrint.outerHTML);
       WinPrint.document.write('<img src="' + dataUrl + '">');
 
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-      WinPrint.close();
+      WinPrint.document.addEventListener('load', function() {
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close(); 
+    }, true);
+      
     },
     getSum(item) {
        return item.total;
