@@ -2,6 +2,9 @@
     <div id="sales-wrapper">
         <!-- <div class="text-left mb-10 d-flex align-center" id="total-header"> -->
             <h3 class="ma-0 text-center mb-10">Sales Report</h3>
+        <div class="mb-5">
+            <v-btn  elevation="6" @click="printGraph()"><v-icon>mdi-printer</v-icon> &nbsp Print</v-btn>
+        </div>
         <v-card class="pa-5 mb-5">
             <v-layout>
                 <v-flex>
@@ -157,8 +160,8 @@
             </v-layout>
             
         </v-card>
-        <v-card class="pa-5">
-          <v-card-title class="pa-0">Graph Total Sales by <strong> &nbsp;  {{checkType()}}</strong></v-card-title>
+        <v-card class="pa-5" >
+          <v-card-title class="pa-0" id="report-graphs">Graph Total Sales by <strong> &nbsp;  {{checkType()}} &nbsp; ({{showMonth=='week' ? start_weeks +' to '+ end_weeks : current_year}})</strong></v-card-title>
           <hr >
           <linechart :chartData="totalSales"></linechart>
         </v-card>
@@ -300,6 +303,9 @@ export default {
       this.calendar('week')
       this.range_end = moment(this.range_start).add('d', 1).format('YYYY-MM-DD')
     },
+    // printGraph(){
+
+    // },
     getTime(date) {
         return moment(date).format('YYYY MMM DD hh:mm:ss')
     },
@@ -314,10 +320,28 @@ export default {
         return 'Daily';
        }
     },
-    print() {
+    // printGraph() {
+   
+    //   var windowContent = '<!DOCTYPE html>';
+    //   windowContent += '<html>'
+    //   windowContent += '<head><title>Print canvas</title></head>';
+    //   windowContent += '<body>'
+    //   windowContent += '<img src="' + dataUrl + '">';
+    //   windowContent += '</body>';
+    //   windowContent += '</html>';
+    //   var printWin = window.open('','','width=340,height=260');
+    //   printWin.document.open();
+    //   printWin.document.write(windowContent);
+    //   printWin.document.close();
+    //   printWin.focus();
+    //   printWin.print();
+    //   printWin.close();
+    // },
+    printGraph() {
 
       // Get HTML to print from element
-     var divToPrint = document.querySelector('#table-wrapper-data');
+     var dataUrl = document.getElementById('line-chart').toDataURL(); //attempt to save base64 string to server using this var  
+     var divToPrint = document.querySelector('#report-graphs');
 
       // Get all stylesheets HTML
       let stylesHtml = '';
@@ -329,6 +353,7 @@ export default {
 
       WinPrint.document.write(stylesHtml);
       WinPrint.document.write(divToPrint.outerHTML);
+      WinPrint.document.write('<img src="' + dataUrl + '">');
 
       WinPrint.document.close();
       WinPrint.focus();
