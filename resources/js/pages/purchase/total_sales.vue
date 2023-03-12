@@ -161,7 +161,7 @@
             
         </v-card>
         <v-card class="pa-5" >
-          <v-card-title class="pa-0" id="report-graphs">Graph Total Sales by <strong> &nbsp;  {{checkType()}} &nbsp; ({{getFilter()}})</strong> <h4 class="mb-0 ml-auto">Totals : ₱ {{ report_total }}</h4></v-card-title>
+          <v-card-title class="pa-0" id="report-graphs">Graph Total Sales by <strong> &nbsp;  {{checkType()}} &nbsp; ({{getFilter()}})</strong> <h4 style="margin-bottom: 0; margin-left: auto;">Totals : ₱ {{ report_total }}</h4></v-card-title>
           <hr >
           <linechart :chartData="totalSales"></linechart>
         </v-card>
