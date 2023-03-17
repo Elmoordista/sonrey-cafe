@@ -10,7 +10,6 @@
         <v-card-title>
           
             <div class="header-wrapper">
-               
                 <div>
                     Order ref # {{detailOrder.order_ref}}
                 </div>

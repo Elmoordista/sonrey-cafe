@@ -57,7 +57,7 @@
 
         <div class="order-info mt-10">
 
-            <v-menu bottom v-if="processItem.length"
+            <v-menu bottom v-if="toggle"
                 origin="center center"
                 transition="scale-transition">
                 <template v-slot:activator="{ on, attrs }">
@@ -67,7 +67,7 @@
                     v-bind="attrs"
                     v-on="on"
                     >
-                    Dropdown
+                    Actions
                     </v-btn>
                 </template>
                 <v-list>
@@ -103,7 +103,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <carousel :items="4" :dots="false" class="mt-10" id="carousel-wrapper-order-info" :nav="false" v-if="processItem.length" :class="toggle ? 'showprocess' : 'hideprocess'"> 
+            <carousel :items="4" :dots="false" class="mt-5" id="carousel-wrapper-order-info" :nav="false" v-if="processItem.length" :class="toggle ? 'showprocess' : 'hideprocess'"> 
                     <template slot="prev">
                             <span class="prev"><v-icon size="50">mdi-arrow-left-bold-circle</v-icon></span>
                     </template>
@@ -141,6 +141,7 @@
                             ></v-checkbox>
                         </div>
                         <div id="card-number"><h4>Ref. ID: {{data.order_ref}}</h4></div>
+                        <div id="card-number"><h5>Note: {{data.note}}</h5></div>
                         <div class="table" id="table-wrapper">
                             <table class="table">
                                 <thead>
