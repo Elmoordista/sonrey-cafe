@@ -56,7 +56,54 @@
         </v-card>
 
         <div class="order-info mt-10">
-            <carousel :items="4" :dots="false" id="carousel-wrapper-order-info" :nav="false" v-if="processItem.length" :class="toggle ? 'showprocess' : 'hideprocess'"> 
+
+            <v-menu bottom v-if="processItem.length"
+                origin="center center"
+                transition="scale-transition">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                    color="primary"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                    Dropdown
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item link @click="selected = processItem">
+                        <v-list-item-content>
+                            <v-list-item-title class="d-flex">
+                                <v-icon size="20">mdi-checkbox-blank-outline</v-icon>
+                                <p class="mb-0 ml-2">
+                                    Select All
+                                </p>
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item link @click="selected = []">
+                        <v-list-item-content>
+                            <v-list-item-title class="d-flex">
+                                <v-icon size="20">mdi-checkbox-marked</v-icon>
+                                <p class="mb-0 ml-2">
+                                    Unselect All
+                                </p>
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item link @click="doneSelected()">
+                        <v-list-item-content>
+                            <v-list-item-title class="d-flex">
+                                <v-icon size="20">mdi-delete</v-icon>
+                                <p class="mb-0 ml-2">
+                                    Done selected
+                                </p>
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+            <carousel :items="4" :dots="false" class="mt-10" id="carousel-wrapper-order-info" :nav="false" v-if="processItem.length" :class="toggle ? 'showprocess' : 'hideprocess'"> 
                     <template slot="prev">
                             <span class="prev"><v-icon size="50">mdi-arrow-left-bold-circle</v-icon></span>
                     </template>
@@ -64,10 +111,35 @@
                     <template slot="next" v-if="items.length > 4">
                         <span class="next"><v-icon size="50">mdi-arrow-right-bold-circle</v-icon></span>
                     </template>
-                    <v-card class="mr-5 pa-5" id="order-info-wrapper" v-for="(data , ind) in processItem" :key="ind">
-                        <div id="card-number" v-if="(ind + 1) <= 9"><h4 > Order #: 00{{(ind + 1)}} </h4></div>
-                        <div id="card-number" v-else-if="(ind + 1) >= 10"><h4 > Order #: 0{{(ind + 1)}} </h4></div>
-                        <div id="card-number" v-else><h4 > Order #: 0{{(ind + 1)}} </h4></div>
+                
+                    <v-card class="mr-5 pa-5 _order-info-wrapper" id="order-info-wrapper" v-for="(data , ind) in processItem" :key="ind">
+                        <div id="card-number" v-if="(ind + 1) <= 9">
+                            <h4 > Order #: 00{{(ind + 1)}} </h4>   
+                            <v-checkbox
+                            class="mt-0"
+                            v-model="selected"
+                            :value="data"
+                            hide-details
+                            ></v-checkbox>
+                        </div>
+                        <div id="card-number" v-else-if="(ind + 1) >= 10">
+                            <h4 > Order #: 0{{(ind + 1)}} </h4>
+                            <v-checkbox
+                            class="mt-0"
+                            v-model="selected"
+                            hide-details
+                            :value="data"
+                            ></v-checkbox>
+                        </div>
+                        <div id="card-number" v-else>
+                            <h4 > Order #: 0{{(ind + 1)}} </h4>
+                            <v-checkbox
+                            class="mt-0"
+                            hide-details
+                            v-model="selected"
+                            :value="data"
+                            ></v-checkbox>
+                        </div>
                         <div id="card-number"><h4>Ref. ID: {{data.order_ref}}</h4></div>
                         <div class="table" id="table-wrapper">
                             <table class="table">
@@ -151,6 +223,7 @@ import carousel from 'vue-owl-carousel'
     data () {
       return {
         items: [],
+        selected: [],
         doneItem: [],
         processItem: [],
         toggle: '',
@@ -199,14 +272,38 @@ import carousel from 'vue-owl-carousel'
                     thiss.initialize()
                 }),
                 'Order done',
-            )
-           
+            ) 
         },
+
+        doneSelected(){
+            if(this.selected.length == 0){
+                return  this.$awn.warning('No selected item')
+            }
+            var payload = {
+                data : this.selected,
+                status: 3,
+             }
+             var thiss = this;
+             this.$awn.asyncBlock(
+                this.axios.post('/admin/order/update_status_bulk',payload).then((response) => {
+                    thiss.initialize()
+                }),
+                'Order selected done',
+            ) 
+        }
     }
   }
 </script>
 
 <style scoped>
+._order-info-wrapper #card-number{
+    display: flex;
+    justify-content: space-between;
+}
+._order-info-wrapper #card-number .v-input{ 
+    position: relative;
+    top: -4px;
+}
 #card-order{
     height: 90px;
     width: 120px;

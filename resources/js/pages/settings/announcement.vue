@@ -42,9 +42,9 @@
                 <h4 class="mb-0 pa-4">Add Announcement</h4>
                 <hr class="ma-0 mb-2"/>
                 <div class="pa-2">
-                <label>Tittle *</label>
+                <label>Title *</label>
                 <v-text-field
-                    placeholder="Tittle"
+                    placeholder="Title"
                     hide-details
                     v-model="payload.tittle"
                     class="mb-3"
@@ -115,7 +115,7 @@
             value: 'image',
             width:"20%"
           },
-          { text: 'Tittle', value: 'tittle' },
+          { text: 'Title', value: 'tittle' },
           { text: 'Link', value: 'link' },
           { text: 'Actions',width:"150", value: 'action' },
         ],

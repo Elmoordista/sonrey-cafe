@@ -31,7 +31,8 @@ class OrderController extends Controller
     {
         $now = Carbon::now()->format('Y-m-d');
         // $data = Order::where('status',1)->Orwhere('status',3)->with('order_detail')->get();
-        $data = Order::where('status',1)->Orwhere('status',3)->whereDate('created_at', $now)->with('order_detail')->get();
+        $data = Order::where('status',1)->Orwhere('status',3)->with('order_detail')->get();
+        // $data = Order::where('status',1)->Orwhere('status',3)->whereDate('created_at', $now)->with('order_detail')->get();
         foreach($data as $key => $datas){
             $data[$key]['order_num'] = $key + 1;
         }
@@ -141,6 +142,14 @@ class OrderController extends Controller
             $this->sendNotification();
         }
         return Order::where('id',$request->id)->update(['status'=>$request->status]);
+    }
+
+    public function update_status_bulk(Request $request) {
+        $data = $request->data;
+        foreach($data as $key=>$datas){
+            Order::where('id',$datas['id'])->update(['status'=>$request->status]);
+        }
+        return 'save';
     }
 
     /**

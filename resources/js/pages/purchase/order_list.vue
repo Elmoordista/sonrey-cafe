@@ -81,7 +81,7 @@
           >
             <v-card id="modal-wrapper"  class="pa-5">
                 <div id="reciep-wrapper" class="reciep-wrapper-print" style="width:100%">
-                  <div class="reciep-order" id="reciep-order">
+                  <div class="reciep-order _order" id="reciep-order">
                     <div class="header-reciept text-center" style="margin-bottom:20px">
                       <h2 style="text-align:center">SONREY CAFE</h2>
                       <p style="text-align:center">3 Katarungan, Mandaluyong, Kalakhang Maynila</p>
@@ -134,7 +134,7 @@
             max-width="700px"
           >
             <v-card id="modal-wrapper"  class="pa-5">
-                <div id="reciep-wrapper" class="reciep-wrapper-print" style="width:100%">
+                <div id="reciep-wrapper" class="reciep-wrapper-print _detail" style="width:100%">
                   <div class="reciep-order" id="reciep-order" style="height: 588px;">
                     <div class="header-reciept text-center" style="margin-bottom:20px">
                       <h2 style="text-align:center">SONREY CAFE</h2>
@@ -298,7 +298,14 @@ import moment from 'moment';
       },
        printReciept(){
        // Get HTML to print from element
-     var divToPrint = document.querySelector('#reciep-order');
+        
+      var divToPrint ='';
+      if(this.dialogPrintDetail == false && this.dialogPrint == true){
+        divToPrint = document.querySelector('._order');
+      }
+      else{
+        divToPrint = document.querySelector('._detail');
+      }
 
       // Get all stylesheets HTML
       let stylesHtml = '';

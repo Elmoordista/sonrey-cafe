@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="position-relative">
       <div class="h1 text-center mb-10">
-        Employees Acccount
+        Employees Account
       </div>
       <v-btn @click="dialog = true"
         class="mx-2"

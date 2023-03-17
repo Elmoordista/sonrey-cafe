@@ -48,6 +48,7 @@ Route::controller(CartDetailController::class)->group(function () {
 
 Route::controller(OrderController::class)->group(function () {
     Route::post('order/update_status', 'update_status');
+    Route::post('order/update_status_bulk', 'update_status_bulk');
     Route::post('order/orderreport/{date}', 'orderReport');
     Route::get('order/orders', 'getOrderList');
 });
