@@ -104,6 +104,15 @@
                   <h4>Total:</h4>
                   <h4>₱ {{totals}}</h4>
               </div>
+              <div class="total-wrapper-note d-flex mb-2">
+                  <h4 class="mb-0">Note</h4>
+                  <v-icon v-if="!addnote" @click="addnote = true" color="success">mdi-plus-circle</v-icon>
+                  <v-icon v-else  @click="addnote = false" color="red">mdi-pencil-circle</v-icon>
+              </div>
+              <div class="total-wrapper-note">
+                <p v-if="payload.note && !addnote">- {{ payload.note }}</p>
+                <v-textarea v-if="addnote" solo v-model="payload.note"></v-textarea>
+              </div>
             </div>
             
           </div>
@@ -178,6 +187,7 @@
                   </div>
                   <div class="body-reciept">
                     <h4 style="margin-bottom:10px">DATE: {{datenow}}</h4>
+                    <h4 style="margin-bottom:10px">Note: {{this.payload.note}}</h4>
                     <hr>
                     <div class="list-cart">
                       <table class="table" style="width:100%">
@@ -223,6 +233,7 @@ export default {
   data: () => ({
     dialog:false,
     dialogPrint:false,
+    addnote:false,
     drawer: null,
     loading: false,
     category_search: '',
@@ -247,6 +258,7 @@ export default {
         cart_id :  '',
         price : '',
         old_total :  '',
+        note :  '',
       }
   }),
   mounted(){
@@ -279,6 +291,7 @@ export default {
       })
     },
     saveOrder(){
+      this.cart_order.note = this.payload.note;
         this.$awn.asyncBlock(
          this.axios.post('/admin/order',this.cart_order).then((response) => {
             // this.getCart()
@@ -479,5 +492,10 @@ export default {
     background-size: contain;
   }
 
+  .total-wrapper-note{
+    padding: 0 17px;
+    gap: 12px;
+    align-items: center;
+  }
 </style>
 
