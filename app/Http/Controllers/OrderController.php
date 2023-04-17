@@ -31,8 +31,8 @@ class OrderController extends Controller
     {
         $now = Carbon::now()->format('Y-m-d');
         // $data = Order::where('status',1)->Orwhere('status',3)->with('order_detail')->get();
-        $data = Order::where('status',1)->Orwhere('status',3)->with('order_detail')->get();
-        // $data = Order::where('status',1)->Orwhere('status',3)->whereDate('created_at', $now)->with('order_detail')->get();
+        // $data = Order::where('status',1)->Orwhere('status',3)->with('order_detail')->get();
+        $data = Order::where('status',1)->Orwhere('status',3)->whereDate('created_at', $now)->with('order_detail')->get();
         foreach($data as $key => $datas){
             $data[$key]['order_num'] = $key + 1;
         }
