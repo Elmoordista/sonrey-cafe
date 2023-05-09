@@ -94,9 +94,9 @@ export default {
       ],
     };
   },
-  // mounted(){
-  //   this.getDeviceToken();
-  // },
+  mounted(){
+    this.getDeviceToken();
+  },
   methods: {
       initialize(token){
           this.token = token;

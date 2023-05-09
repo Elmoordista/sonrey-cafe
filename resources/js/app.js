@@ -18,7 +18,7 @@ import VueAxios from 'vue-axios'
 
 import App from './layout';
 
-// import firebaseHelper from './mixins/firebaseHelper.vue';
+import firebaseHelper from './mixins/firebaseHelper.vue';
 
 import "../css/app.css"
 
@@ -40,7 +40,7 @@ let options = {
 
 Vue.use(VueAWN, options)
 
-// Vue.mixin(firebaseHelper);
+Vue.mixin(firebaseHelper);
 
 Vue.use(VueAxios, axios)
 /**
