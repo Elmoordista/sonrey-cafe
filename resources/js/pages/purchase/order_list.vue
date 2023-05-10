@@ -58,7 +58,7 @@
           {{item.client.name}}
           </div>
         </template>
-        <template v-slot:item.pay="{ item }">
+        <!-- <template v-slot:item.pay="{ item }">
           <div>
           ₱ {{item.pay}}
           </div>
@@ -67,7 +67,7 @@
           <div>
           ₱ {{item.change}}
           </div>
-        </template>
+        </template> -->
         <template v-slot:item.total="{ item }">
           <div>
           ₱ {{item.total}}
@@ -106,8 +106,8 @@
                               <th style="text-align:left">Ref. Order</th>
                               <th style="text-align:left">Customer</th>
                               <th style="text-align:left">Status</th>
-                              <th style="text-align:left">Pay</th>
-                              <th style="text-align:left">Change</th>
+                              <!-- <th style="text-align:left">Pay</th>
+                              <th style="text-align:left">Change</th> -->
                               <th style="text-align:left">Total</th>
                             </tr>
                           </thead>
@@ -116,8 +116,8 @@
                               <td style="text-align:left ;padding:5px">{{item.order_ref}}</td>
                               <td style="text-align:left ;padding:5px">{{item.client.name}}</td>
                               <td style="text-align:left ;padding:5px">{{getStatus(item.status)}}</td>
-                              <td style="text-align:left ;padding:5px">₱ {{item.pay}}</td>
-                              <td style="text-align:left ;padding:5px">₱ {{item.change}}</td>
+                              <!-- <td style="text-align:left ;padding:5px">₱ {{item.pay}}</td>
+                              <td style="text-align:left ;padding:5px">₱ {{item.change}}</td> -->
                               <td style="text-align:left ;padding:5px">₱ {{item.total}}</td>
                             </tr>
                           </tbody>
@@ -235,8 +235,8 @@ import moment from 'moment';
           { text: 'Ref. Order', value: 'order_ref'},
           { text: 'Note', value: 'note'},
           { text: 'Customer', value: 'name' },
-          { text: 'Pay', value: 'pay' },
-          { text: 'Change', value: 'change' },
+          // { text: 'Pay', value: 'pay' },
+          // { text: 'Change', value: 'change' },
           { text: 'Total', value: 'total' },
           { text: 'Status', value: 'status'},
           { text: 'Actions', value: 'action' },
