@@ -240,7 +240,7 @@ import moment from 'moment';
           { text: 'Note', value: 'note'},
           { text: 'Customer', value: 'name' },
           { text: 'Pay', value: 'pay' },
-          { text: 'Change', value: 'total' },
+          { text: 'Change', value: 'change' },
           { text: 'Total', value: 'total' },
           { text: 'Order Date', value: 'created_at' },
           { text: 'Status', value: 'status'},
