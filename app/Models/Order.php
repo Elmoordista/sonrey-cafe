@@ -14,6 +14,8 @@ class Order extends Model
         'client_id',
         'note',
         'total',
+        'pay',
+        'change',
     ];
 
     public function order_detail()

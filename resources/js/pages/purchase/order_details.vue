@@ -71,14 +71,24 @@
         <template v-slot:item.total="{ item }">
         {{item.total}}
         </template>
-        </v-data-table> 
+        </v-data-table>
 
         <div id="total-wrapper">
-            <div>
-                Total order amount:
+            <div class="info_total">
+              <div>
+                  Amount Pay: ₱ {{detailOrder.pay}}
+              </div>
+              <div>
+                  Change :  ₱ {{detailOrder.change}}
+              </div>
             </div>
-            <div>
-                {{detailOrder.total}}
+            <div class="info_total"> 
+              <div>
+                  Total order amount:
+              </div>
+              <div>
+                ₱ {{detailOrder.total}}
+              </div>
             </div>
         </div>
         </v-card>
@@ -99,6 +109,9 @@
                       <h4 style="margin-bottom:5px">Order ref: {{detailOrder.order_ref}}</h4>
                       <h4 style="margin-bottom:5px">Order status: {{getStatus(detailOrder.status)}}</h4>
                       <h4 style="margin-bottom:10px">DATE: {{datenow}}</h4>
+                      <h4 style="margin-bottom:10px">PAY: ₱ {{detailOrder.pay}}</h4>
+                      <h4 style="margin-bottom:10px">CHANGE: ₱ {{detailOrder.change}}</h4>
+                      <h4 style="margin-bottom:10px">TOTAL: ₱ {{detailOrder.total}}</h4>
                       <hr>
                       <div class="list-cart">
                         <table class="table" style="width:100%">
@@ -245,10 +258,12 @@ tbody{
 }
 #total-wrapper{
     display: flex;
-    margin-left: auto;
+    margin-left: unset;
     width: fit-content;
     gap: 15px;
     padding: 25px;
+    justify-content: space-between;
+    width: 100%;
 }
 #total-wrapper *{
     font-size: 18px;
@@ -257,5 +272,9 @@ tbody{
     display: flex;
     gap: 40px;
     align-items: center;
+}
+.info_total{
+  display: flex;
+    gap: 16px;
 }
 </style>

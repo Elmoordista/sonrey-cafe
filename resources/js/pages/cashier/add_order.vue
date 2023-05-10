@@ -100,10 +100,19 @@
                 </table>
               </div>
               <hr>
+              <div class="total-wrapper d-flex mb-2" style="gap:5px;     align-items: end;">
+                  <h4>Pay:</h4>
+                  <v-text-field placeholder="₱" solo dense hide-details v-model="payload.pay" @keydown="isNumber($event)" @input="calculateChange" clearable></v-text-field>
+              </div>
               <div class="total-wrapper d-flex">
                   <h4>Total:</h4>
                   <h4>₱ {{totals}}</h4>
               </div>
+              <div class="total-wrapper d-flex">
+                  <h4>Change:</h4>
+                  <h4>₱ {{payload.change ? payload.change : 0}}</h4>
+              </div>
+             
               <div class="total-wrapper-note d-flex mb-2">
                   <h4 class="mb-0">Note</h4>
                   <v-icon v-if="!addnote" @click="addnote = true" color="success">mdi-plus-circle</v-icon>
@@ -188,6 +197,9 @@
                   <div class="body-reciept">
                     <h4 style="margin-bottom:10px">DATE: {{datenow}}</h4>
                     <h4 style="margin-bottom:10px">Note: {{this.payload.note}}</h4>
+                    <h4 style="margin-bottom:10px">PAY: {{payload.pay}}</h4>
+                    <h4 style="margin-bottom:10px">TOTAL: {{payload.total_amount}}</h4>
+                    <h4 style="margin-bottom:10px">CHANGE: {{this.payload.change}}</h4>
                     <hr>
                     <div class="list-cart">
                       <table class="table" style="width:100%">
@@ -290,8 +302,18 @@ export default {
       this.$awn.success('Delete order in cart successfully')
       })
     },
+    calculateChange(){
+      this.payload.change = this.payload.pay - this.totals;
+    },
     saveOrder(){
+      if(!this.payload.pay){
+        this.$awn.alert('Please input amount pay')
+        return;
+      }
+      this.payload.total_amount = this.totals;
       this.cart_order.note = this.payload.note;
+      this.cart_order.pay =parseInt(this.payload.pay);
+      this.cart_order.change = this.payload.change;
         this.$awn.asyncBlock(
          this.axios.post('/admin/order',this.cart_order).then((response) => {
             // this.getCart()
@@ -302,6 +324,13 @@ export default {
           }),
           'Order added successfully',
         )
+    },
+    isNumber(e){
+        const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', 'Backspace'];
+        const keyPressed = e.key;
+        if (!keysAllowed.includes(keyPressed)) {
+          e.preventDefault()
+        }
     },
     searchProduct(){
       var payload = {

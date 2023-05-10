@@ -58,6 +58,16 @@
           {{item.client.name}}
           </div>
         </template>
+        <template v-slot:item.pay="{ item }">
+          <div>
+          ₱ {{item.pay}}
+          </div>
+        </template>
+        <template v-slot:item.change="{ item }">
+          <div>
+          ₱ {{item.change}}
+          </div>
+        </template>
         <template v-slot:item.total="{ item }">
           <div>
           ₱ {{item.total}}
@@ -96,6 +106,8 @@
                               <th style="text-align:left">Ref. Order</th>
                               <th style="text-align:left">Customer</th>
                               <th style="text-align:left">Status</th>
+                              <th style="text-align:left">Pay</th>
+                              <th style="text-align:left">Change</th>
                               <th style="text-align:left">Total</th>
                             </tr>
                           </thead>
@@ -104,7 +116,9 @@
                               <td style="text-align:left ;padding:5px">{{item.order_ref}}</td>
                               <td style="text-align:left ;padding:5px">{{item.client.name}}</td>
                               <td style="text-align:left ;padding:5px">{{getStatus(item.status)}}</td>
-                              <td style="text-align:left ;padding:5px">{{item.total}}</td>
+                              <td style="text-align:left ;padding:5px">₱ {{item.pay}}</td>
+                              <td style="text-align:left ;padding:5px">₱ {{item.change}}</td>
+                              <td style="text-align:left ;padding:5px">₱ {{item.total}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -144,6 +158,9 @@
                       <h4 style="margin-bottom:5px">Order ref: {{orderRef}}</h4>
                       <h4 style="margin-bottom:5px">Order status: {{getStatus(orderStat)}}</h4>
                       <h4 style="margin-bottom:10px">DATE: {{datenow}}</h4>
+                      <h4 style="margin-bottom:10px">PAY: ₱ {{pay}}</h4>
+                      <h4 style="margin-bottom:10px">CHANGE: ₱ {{change}}</h4>
+                      <h4 style="margin-bottom:10px">TOTAL: ₱ {{totals}}</h4>
                       <hr>
                       <div class="list-cart">
                         <table class="table" style="width:100%">
@@ -198,6 +215,8 @@ import moment from 'moment';
         orderRef : '',
         orderStat: '',
         totals : 0,
+        pay : 0,
+        change : 0,
         datenow: moment().format('DD MMM YYYY hh:mm:ss'),
 
         filter: '',
@@ -216,6 +235,8 @@ import moment from 'moment';
           { text: 'Ref. Order', value: 'order_ref'},
           { text: 'Note', value: 'note'},
           { text: 'Customer', value: 'name' },
+          { text: 'Pay', value: 'pay' },
+          { text: 'Change', value: 'change' },
           { text: 'Total', value: 'total' },
           { text: 'Status', value: 'status'},
           { text: 'Actions', value: 'action' },
@@ -269,6 +290,8 @@ import moment from 'moment';
         this.orderRef  = item.order_ref;
         this.orderStat  = item.status;
         this.totals  = item.total;
+        this.pay  = item.pay;
+        this.change  = item.change;
         this.axios.get("/admin/cart_detail/"+`${item.id}`).then((response) => {
           this.detailOrder = response.data.order_detail
           this.dialogPrintDetail = true
